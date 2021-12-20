@@ -97,7 +97,7 @@ class _NotificationState extends State<Notifications> {
                                                 builder: (context) {
                                                   return AlertDialog(
                                                       backgroundColor:
-                                                          bgColor(isDarkTheme),
+                                                          srcColor(isDarkTheme),
                                                       content: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment

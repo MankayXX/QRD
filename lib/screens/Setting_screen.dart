@@ -116,7 +116,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                        backgroundColor: bgColor(isDarkTheme),
+                                        backgroundColor: srcColor(isDarkTheme),
                                         content: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
@@ -168,7 +168,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                        backgroundColor: bgColor(isDarkTheme),
+                                        backgroundColor: srcColor(isDarkTheme),
                                         content: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
@@ -220,7 +220,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                        backgroundColor: bgColor(isDarkTheme),
+                                        backgroundColor: srcColor(isDarkTheme),
                                         content: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
@@ -272,7 +272,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                        backgroundColor: bgColor(isDarkTheme),
+                                        backgroundColor: srcColor(isDarkTheme),
                                         content: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
@@ -329,7 +329,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                        backgroundColor: bgColor(isDarkTheme),
+                                        backgroundColor: srcColor(isDarkTheme),
                                         content: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,

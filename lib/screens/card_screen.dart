@@ -36,7 +36,7 @@ class _CardScreenState extends State<CardScreen> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                          backgroundColor: bgColor(isDarkTheme),
+                          backgroundColor: srcColor(isDarkTheme),
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
