@@ -14,7 +14,7 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData dark = ThemeData(
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: darkmodeBg,
+      scaffoldBackgroundColor: Colors.black,
       fontFamily: "Poppins",
       appBarTheme: AppBarTheme(
         backgroundColor: darkmodeAb,

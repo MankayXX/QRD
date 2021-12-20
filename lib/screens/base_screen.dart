@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrd_qr_card_ui/Setting_screens/notifications_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/screens/explore_screen.dart';
 import 'package:qrd_qr_card_ui/screens/home_Screen.dart';

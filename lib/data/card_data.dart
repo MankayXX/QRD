@@ -49,7 +49,7 @@ displayTextInputDialog(BuildContext context) async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: bgColor(isDarkTheme),
+        backgroundColor: srcColor(isDarkTheme),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30))),
         title: Text(
@@ -184,7 +184,7 @@ clickedCard(BuildContext context, int index) async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: bgColor(isDarkTheme),
+        backgroundColor: srcColor(isDarkTheme),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30))),
         content: Column(
@@ -252,7 +252,7 @@ displayTextInputDialog3(BuildContext context, int index) async {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30))),
         title: Text('Kart bilgileri'),
-        backgroundColor: bgColor(isDarkTheme),
+        backgroundColor: srcColor(isDarkTheme),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,

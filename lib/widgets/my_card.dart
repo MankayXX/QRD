@@ -69,9 +69,6 @@ class _MyCardState extends State<MyCard> {
                 Text("Linkler", style: ApptextStyle.MY_CARD_TITLE),
                 GestureDetector(
                   onTap: () {
-                    //TODO tıklanan linki düzenlemek istiyorum
-                    //String deneme = widget.card.linkler.toString();
-
                     return showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -80,7 +77,7 @@ class _MyCardState extends State<MyCard> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(30))),
                             title: Text('Linkler'),
-                            backgroundColor: bgColor(isDarkTheme),
+                            backgroundColor: srcColor(isDarkTheme),
                             content: Container(
                               width: double.minPositive,
                               child: ListView.builder(
@@ -102,7 +99,7 @@ class _MyCardState extends State<MyCard> {
                                                 title: Text(
                                                     widget.card.linkler[index]),
                                                 backgroundColor:
-                                                    bgColor(isDarkTheme),
+                                                    srcColor(isDarkTheme),
                                                 content: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
@@ -160,7 +157,7 @@ class _MyCardState extends State<MyCard> {
                                                                   (context) {
                                                                 return AlertDialog(
                                                                     backgroundColor:
-                                                                        bgColor(
+                                                                        srcColor(
                                                                             isDarkTheme),
                                                                     content:
                                                                         Column(

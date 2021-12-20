@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qrd_qr_card_ui/Setting_screens/notifications_screen.dart';
 import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'dart:math';
@@ -37,6 +38,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: bgColor(isDarkTheme),
           elevation: 0,
           title: Padding(
             padding: const EdgeInsets.all(0),
@@ -76,26 +78,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              return showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                        backgroundColor: bgColor(isDarkTheme),
-                                        content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text("🛠 Bitmedi 🛠",
-                                                style: TextStyle(
-                                                    color: Colors.red)),
-                                            Text("Bildirim ayarları",
-                                                style: TextStyle(
-                                                    color: otherColor(
-                                                        isDarkTheme))),
-                                          ],
-                                        ));
-                                  });
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Notifications()));
                             },
                             child: Container(
                               width: 550,
@@ -318,7 +302,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Row(children: [
-                                        Icon(Icons.help_outline),
+                                        IconTheme(
+                                          data: IconThemeData(
+                                            color: otherColor(isDarkTheme),
+                                          ),
+                                          child: Icon(Icons.help_outline),
+                                        ),
                                         SizedBox(width: 15),
                                         Text(
                                           "Yardım",

@@ -39,7 +39,7 @@ Color randomColor() {
 //! Gece Modu Renkler
 
 const darkmodeBg = Color(0xff303041);
-const srcDark = Color(0xff3d3a50);
+const srcDark = Color(0xff1d1d1d);
 const srcLight = Color(0xffE0E0E0);
 const darkmodeAb = Color(0xff303041);
 const kPrimaryColorDm = Color(0xffededed);
@@ -47,7 +47,7 @@ const kPrimaryColorDm = Color(0xffededed);
 Color bgColor(bool isDark) {
   Color bgColor;
   if (isDark == true) {
-    bgColor = darkmodeBg;
+    bgColor = Colors.black;
   } else if (isDark == false) {
     bgColor = Colors.white;
   }
@@ -89,7 +89,7 @@ Color otherColor(bool isDark) {
   if (isDark == true) {
     otherColor = Colors.white;
   } else if (isDark == false) {
-    otherColor = kPrimaryColor;
+    otherColor = Colors.black;
   }
   return otherColor;
 }

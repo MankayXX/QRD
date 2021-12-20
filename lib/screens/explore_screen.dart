@@ -17,6 +17,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgColor(isDarkTheme),
         elevation: 0,
         title: Padding(
           padding: const EdgeInsets.all(0),
