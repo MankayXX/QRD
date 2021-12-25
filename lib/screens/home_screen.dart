@@ -24,13 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: bgColor(isDarkTheme),
-        title: Text(
-          "Q  R  D",
-          style: TextStyle(
-            fontFamily: "Poppins",
-            color: randomColor(),
-          ),
-        ),
+        title: qrdLogo(isDarkTheme),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(

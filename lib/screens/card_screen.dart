@@ -20,13 +20,7 @@ class _CardScreenState extends State<CardScreen> {
         backgroundColor: bgColor(isDarkTheme),
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          "Q  R  D",
-          style: TextStyle(
-            fontFamily: "Poppins",
-            color: randomColor(),
-          ),
-        ),
+        title: qrdLogo(isDarkTheme),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(

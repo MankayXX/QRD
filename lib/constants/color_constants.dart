@@ -54,6 +54,18 @@ Color bgColor(bool isDark) {
   return bgColor;
 }
 
+Image qrdLogo(bool isDark) {
+  Image qrdLogo;
+  if (isDark == true) {
+    qrdLogo = Image.asset('assets/logo/qrd_logo_white.png',
+        fit: BoxFit.contain, height: 23);
+  } else if (isDark == false) {
+    qrdLogo = Image.asset('assets/logo/qrd_logo_black.png',
+        fit: BoxFit.contain, height: 23);
+  }
+  return qrdLogo;
+}
+
 IconData textIcon(bool isDark) {
   IconData textIcon;
   if (isDark == true) {
