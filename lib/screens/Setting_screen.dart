@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:qrd_qr_card_ui/Setting_screens/about_screen.dart';
 import 'package:qrd_qr_card_ui/Setting_screens/notifications_screen.dart';
-import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
+import 'package:qrd_qr_card_ui/Setting_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-import 'dart:math';
-import 'package:qrd_qr_card_ui/data/theme_data.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key key}) : super(key: key);
@@ -12,24 +10,7 @@ class SettingScreen extends StatefulWidget {
   State<SettingScreen> createState() => _SettingScreenState();
 }
 
-// TODO arama kısmı
-// TODO Bildirim
-// TODO gizlilik
-// TODO güvenlik
-// TODO Hesap
-// TODO Hakkında
-// TODO Tema
 bool isDarkTheme = true;
-
-String changeText(bool isDark) {
-  String text;
-  if (isDark == true) {
-    text = "Karanlık Mod";
-  } else {
-    text = "Aydınlık Mod";
-  }
-  return text;
-}
 
 class _SettingScreenState extends State<SettingScreen> {
   final ops = CurrentTheme();
@@ -325,26 +306,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         SizedBox(height: 15),
                         GestureDetector(
                             onTap: () {
-                              return showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                        backgroundColor: srcColor(isDarkTheme),
-                                        content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text("🛠 Bitmedi 🛠",
-                                                style: TextStyle(
-                                                    color: Colors.red)),
-                                            Text("Hakkında ayarları",
-                                                style: TextStyle(
-                                                    color: otherColor(
-                                                        isDarkTheme))),
-                                          ],
-                                        ));
-                                  });
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AboutScreen()));
                             },
                             child: Container(
                               width: 550,
@@ -377,12 +340,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         SizedBox(height: 15),
                         GestureDetector(
                             onTap: () {
-                              ThemeProvider themeProvider =
-                                  Provider.of<ThemeProvider>(context,
-                                      listen: false);
-                              themeProvider.swapTheme();
                               setState(() {
-                                isDarkTheme = !isDarkTheme;
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Tema()));
                               });
                             },
                             child: Container(

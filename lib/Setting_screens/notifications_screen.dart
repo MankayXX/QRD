@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-import 'package:qrd_qr_card_ui/data/card_data.dart';
-import 'package:qrd_qr_card_ui/data/transaction_data.dart';
 import 'package:qrd_qr_card_ui/screens/Setting_screen.dart';
-import 'package:qrd_qr_card_ui/screens/home_screen.dart';
-import 'package:qrd_qr_card_ui/widgets/my_card.dart';
-import 'package:qrd_qr_card_ui/widgets/transaction_card.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({Key key}) : super(key: key);
@@ -16,13 +11,9 @@ class Notifications extends StatefulWidget {
 
 bool bildirim;
 
-//TODO  Tüm bildirimler
-//TODO okuma bildirimi
-
 class _NotificationState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData = MediaQuery.of(context);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: bgColor(isDarkTheme),
@@ -76,8 +67,8 @@ class _NotificationState extends State<Notifications> {
                                         Container(
                                           width: 30,
                                           child: Switch(
-                                              activeColor: Colors.white,
-                                              inactiveThumbColor: Colors.white,
+                                              activeColor:
+                                                  switchColor(isDarkTheme),
                                               inactiveTrackColor: Colors.grey,
                                               value: bildirim,
                                               onChanged: (value) {

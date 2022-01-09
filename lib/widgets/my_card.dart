@@ -14,17 +14,25 @@ class MyCard extends StatefulWidget {
 }
 
 String linklers(List link) {
-  if (link.length > 1 && link.length <= 2) {
+  int sum = 0;
+  for (var i = 0; i < link.length; i++) {
+    sum += link[i].length;
+  }
+  //TODO Linkleri sadece adet olarak koşulluyor ancak tek bir link, 15 karakteri geçtiğinde hata veriyor!
+  //TODO özel olarak tıkladığım linklerin içine gerçek bir link koyabileceğim bir 2 boyutlu dizi yapısı oluşturmam lazım
+  if (link.length > 1 && link.length <= 2 && sum < 15) {
     return '${link[0]}, ${link[1]}'.toUpperCase();
-  } else if (link.length > 2 && link.length <= 3) {
+  } else if (link.length > 2 && link.length <= 3 && sum < 15) {
     return '${link[0]}, ${link[1]}, ${link[2]}'.toUpperCase();
-  } else if (link.length > 3 && link.length <= 4) {
+  } else if (link.length > 3 && link.length <= 4 && sum < 15) {
     return '${link[0]}, ${link[1]}, ${link[2]}, ${link[3]}'.toUpperCase();
-  } else if (link.length > 4 && link.length <= 5) {
+  } else if (link.length > 4 && link.length <= 5 && sum < 15) {
     return '${link[0]}, ${link[1]}, ${link[2]}, ${link[3]}, ${link[4]}'
         .toUpperCase();
-  } else if (link.length == 1) {
+  } else if (link.length == 1 && sum < 15) {
     return '${link[0]}'.toUpperCase();
+  } else if (sum > 15) {
+    return '${link[0]}, ${link[1]}...'.toUpperCase();
   } else {
     return '${link[0]}, ${link[1]}...'.toUpperCase();
   }
@@ -85,7 +93,9 @@ class _MyCardState extends State<MyCard> {
                                 itemCount: widget.card.linkler.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return ListTile(
-                                    title: Text(widget.card.linkler[index]),
+                                    title: Text(widget.card.linkler[index]
+                                        .toString()
+                                        .toUpperCase()),
                                     onTap: () {
                                       return showDialog(
                                           context: context,
@@ -213,6 +223,32 @@ class _MyCardState extends State<MyCard> {
                     ],
                   ),
                   SizedBox(width: 20),
+                ],
+              )
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "Kart Sahibi",
+                    style: ApptextStyle.MY_CARD_TITLE,
+                  ),
+                  Text(
+                    "Mert Mankay",
+                    style: ApptextStyle.MY_CARD_SUBTITLE,
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                      onTap: () {}, child: Icon(Icons.menu_rounded, size: 35)),
                 ],
               )
             ],

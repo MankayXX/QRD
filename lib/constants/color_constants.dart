@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-//! Normal Renkler
-
 const kPrimaryColor = Color(0xff00444f);
 const kSecondaryColor = Color(0xffff7b67);
 const kThirdColor = Color(0xfffcd76b);
@@ -35,8 +33,6 @@ Color randomColor() {
   return colorsDM[rng.nextInt(colorsDM.length)];
   // return Color(0xffF25270);
 }
-
-//! Gece Modu Renkler
 
 const darkmodeBg = Color(0xff303041);
 const srcDark = Color(0xff1d1d1d);
@@ -104,4 +100,14 @@ Color otherColor(bool isDark) {
     otherColor = Colors.black;
   }
   return otherColor;
+}
+
+Color switchColor(bool isDark) {
+  Color switchColor;
+  if (isDark == true) {
+    switchColor = Colors.white;
+  } else if (isDark == false) {
+    switchColor = randomColor();
+  }
+  return switchColor;
 }
