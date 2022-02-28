@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
@@ -60,10 +59,31 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   },
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {
-                        clickedCard(context, index).then((exit) {
+                      onLongPress: () {
+                        cardSettings(context, index).then((exit) {
                           setState(() {});
                         });
+                        print("basılı tuttu");
+                      },
+                      onTap: () {
+                        return showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                  backgroundColor: srcColor(isDarkTheme),
+                                  content: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text("🛠 Bitmedi 🛠",
+                                          style: TextStyle(color: Colors.red)),
+                                      Text("QR Kod",
+                                          style: TextStyle(
+                                              color: otherColor(isDarkTheme))),
+                                    ],
+                                  ));
+                            });
                       },
                       child: MyCard(
                         card: myCards[index],

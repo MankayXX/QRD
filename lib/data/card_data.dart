@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/data/transaction_data.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/screens/Setting_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CardModel {
   String kartIsmi;
@@ -20,20 +19,23 @@ extension CapExtension on String {
   String get inCaps => '${this[0].toUpperCase()}${this.substring(1)}';
 }
 
+int static_index = 10;
 List arr = ["qrd"];
 CardModel ilkKart = new CardModel(
     kartIsmi: "İlk kart",
     linkler: arr,
     oTarihi: tarih,
-    index: 0,
+    index: static_index,
     kartRenk: randomColor());
 
 List<CardModel> myCards = [ilkKart];
 
 addCard(String isim, List link) {
+  static_index++;
   CardModel a = new CardModel(
     kartIsmi: isim,
     linkler: link,
+    index: static_index,
     oTarihi: fullDate(),
     kartRenk: randomColor(),
   );
@@ -47,7 +49,7 @@ TextEditingController _textFieldController2 = TextEditingController();
 displayTextInputDialog(BuildContext context) async {
   return showDialog(
     context: context,
-    builder: (context) {
+    builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: srcColor(isDarkTheme),
         shape: RoundedRectangleBorder(
@@ -68,9 +70,7 @@ displayTextInputDialog(BuildContext context) async {
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: otherColor(isDarkTheme)),
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: randomColor()),
-                    ))),
+                    focusedBorder: UnderlineInputBorder())),
             TextField(
                 controller: _textFieldController2,
                 decoration: InputDecoration(
@@ -78,10 +78,29 @@ displayTextInputDialog(BuildContext context) async {
                   hintStyle: TextStyle(color: otherColor(isDarkTheme)),
                   enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: otherColor(isDarkTheme))),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: randomColor()),
-                  ),
+                  focusedBorder: UnderlineInputBorder(),
                 )),
+            ElevatedButton(
+                child: Text("Renk"),
+                onPressed: () {
+                  // TODO her renk için bir buton ve butonların rengi kendi renkleri olmalı
+                }),
+            /*
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Container(
+                color: Colors.red,
+                child: PopupMenuButton<String>(
+                    icon: Icon(Icons.access_alarm),
+                    onSelected: choiceAction,
+                    itemBuilder: (BuildContext context) {
+                      return Contasts.choices.map((String choice) {
+                        return PopupMenuItem<String>(
+                            value: choice, child: Text(choice));
+                      }).toList();
+                    }),
+              ),
+            ),*/
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: ElevatedButton(
@@ -116,12 +135,34 @@ displayTextInputDialog(BuildContext context) async {
                   }
                 },
               ),
-            )
+            ),
           ],
         ),
       );
     },
   );
+}
+
+void choiceAction(String choice) {
+  if (choice == Contasts.FirstItem) {
+    print("I First Item");
+  } else if (choice == Contasts.SecondItem) {
+    print("I Second Item");
+  } else if (choice == Contasts.LastItem) {
+    print("I Last Item");
+  }
+}
+
+class Contasts {
+  static const String FirstItem = "deneme 1";
+  static const String SecondItem = "deneme 2";
+  static const String LastItem = "deneme 3";
+
+  static const List<String> choices = <String>[
+    FirstItem,
+    SecondItem,
+    LastItem,
+  ];
 }
 
 displayTextInputDialog2(BuildContext context) async {
@@ -171,15 +212,7 @@ displayTextInputDialog2(BuildContext context) async {
   );
 }
 
-launchURL(String link) async {
-  if (await canLaunch(link)) {
-    await launch(link);
-  } else {
-    print('Could not launch $link');
-  }
-}
-
-clickedCard(BuildContext context, int index) async {
+cardSettings(BuildContext context, int index) async {
   return showDialog(
     context: context,
     builder: (context) {
@@ -212,8 +245,10 @@ clickedCard(BuildContext context, int index) async {
                 if (myCards.length - 1 > 0) {
                   myCards.removeAt(index);
                   addTransactionModel("Bir kart sildi");
+                  Navigator.of(context).pop();
+                } else {
+                  _deneme(context).then((exit) => Navigator.of(context).pop());
                 }
-                Navigator.of(context).pop();
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -297,7 +332,6 @@ displayTextInputDialog3(BuildContext context, int index) async {
                       _textFieldController2.text.isEmpty) {
                     changeCard(_textFieldController.text.inCaps,
                         myCards[index].linkler, index);
-                    print("sadece isim");
                     addTransactionModel('Bir kart düzenledi');
                   }
                   //Sadece linkler değişiyor
@@ -305,14 +339,12 @@ displayTextInputDialog3(BuildContext context, int index) async {
                       _textFieldController2.text.isNotEmpty) {
                     changeCard(myCards[index].kartIsmi, linkler, index);
                     addTransactionModel('Bir kart düzenledi');
-                    print("sadece link");
                   }
                   //her ikisi de değişiyor
                   else if (_textFieldController.text.isNotEmpty &&
                       _textFieldController2.text.isNotEmpty) {
                     changeCard(
                         _textFieldController.text.inCaps, linkler, index);
-                    print("her ikisi");
                     addTransactionModel('Bir kart düzenledi');
                   }
                   //hiçbirisi değişmiyor
@@ -333,6 +365,25 @@ displayTextInputDialog3(BuildContext context, int index) async {
               ),
             )
           ],
+        ),
+      );
+    },
+  );
+}
+
+_deneme(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30))),
+        title: Text('Kart bilgileri'),
+        backgroundColor: srcColor(isDarkTheme),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[Text("Tek kartı silemezsin!")],
         ),
       );
     },

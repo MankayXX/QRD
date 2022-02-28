@@ -27,10 +27,17 @@ const colorsDM = [
   Color(0xffA6465F),
   Color(0xffD91448)
 ];
+var i = 0;
+//TODO kart oluşturma ekranında renk seçebileceğim bir kısım olmalı, eğer boş geçilirse rastgele renk verilsin.
 
 Color randomColor() {
-  var rng = new Random();
-  return colorsDM[rng.nextInt(colorsDM.length)];
+  i++;
+  if (i < colorsLM.length) {
+    return colorsLM[i];
+  } else if (i == colorsLM.length) {
+    i = -1;
+  }
+
   // return Color(0xffF25270);
 }
 
@@ -110,4 +117,15 @@ Color switchColor(bool isDark) {
     switchColor = randomColor();
   }
   return switchColor;
+}
+
+Color shadowColor(bool isDark) {
+  var rngs = new Random();
+  Color shadowColor;
+  if (isDark == true) {
+    shadowColor = colorsLM[rngs.nextInt(colorsLM.length)];
+  } else if (isDark == false) {
+    shadowColor = colorsLM[rngs.nextInt(colorsLM.length)];
+  }
+  return shadowColor;
 }

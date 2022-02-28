@@ -108,8 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {
-                          clickedCard(context, index).then((exit) {
+                        onLongPress: () {
+                          cardSettings(context, index).then((exit) {
                             setState(() {});
                           });
                         },
