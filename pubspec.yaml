@@ -38,6 +38,8 @@ dependencies:
   flutter_search_bar: ^2.1.0
   flutter_launcher_icons: ^0.9.2
   custom_radio_grouped_button: ^2.1.1
+  units_converter: ^1.1.1+2
+  qr_flutter: ^4.0.0
 
 flutter_icons:
   image_path_ios: "icons/ios_full.png" 
