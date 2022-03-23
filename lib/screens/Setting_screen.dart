@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:qrd_qr_card_ui/Setting_screens/about_screen.dart';
-import 'package:qrd_qr_card_ui/Setting_screens/notifications_screen.dart';
-import 'package:qrd_qr_card_ui/Setting_screens/theme_screen.dart';
+import 'package:qrd_qr_card_ui/Other_screens/about_screen.dart';
+import 'package:qrd_qr_card_ui/Other_screens/notifications_screen.dart';
+import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key key}) : super(key: key);
+
   @override
   State<SettingScreen> createState() => _SettingScreenState();
 }
 
-bool isDarkTheme = true;
-
 class _SettingScreenState extends State<SettingScreen> {
-  final ops = CurrentTheme();
+  @override
+  void initState() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +61,12 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Notifications()));
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Tema(),
+                                ),
+                              );
                             },
                             child: Container(
                               width: 550,
@@ -398,3 +404,5 @@ class CurrentTheme extends ChangeNotifier {
         backgroundColor: darkmodeAb,
       ));
 }
+
+void _nagivateThemeScreen() {}

@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qrd_qr_card_ui/screens/Setting_screen.dart';
 import 'package:qrd_qr_card_ui/screens/qr_screen.dart';
 import 'card_screen.dart';
+import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
+import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key key}) : super(key: key);
@@ -17,6 +19,7 @@ class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
+    LoginScreen(),
     HomeScreen(),
     ExploreScreen(),
     QrScreen(),
@@ -38,11 +41,13 @@ class _BaseScreenState extends State<BaseScreen> {
           unselectedItemColor: Colors.grey,
           items: [
             BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.sign), label: "Giriş TEST"),
+            BottomNavigationBarItem(
                 icon: Icon(FontAwesomeIcons.home), label: "Anasayfa"),
             BottomNavigationBarItem(
                 icon: Icon(FontAwesomeIcons.search), label: "Keşfet"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.qr_code_scanner_rounded), label: "Tara"),
+                icon: Icon(Icons.qr_code_scanner_rounded), label: "Tara TEST"),
             BottomNavigationBarItem(
                 icon: Icon(FontAwesomeIcons.idCard), label: "Kartlar"),
             BottomNavigationBarItem(

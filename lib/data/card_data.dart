@@ -2,7 +2,7 @@ import 'package:qrd_qr_card_ui/data/date_date.dart';
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/data/transaction_data.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-import 'package:qrd_qr_card_ui/screens/Setting_screen.dart';
+import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 
 class CardModel {
   String kartIsmi;
@@ -19,7 +19,7 @@ extension CapExtension on String {
   String get inCaps => '${this[0].toUpperCase()}${this.substring(1)}';
 }
 
-int static_index = 10;
+int static_index = 100;
 List arr = ["qrd"];
 CardModel ilkKart = new CardModel(
     kartIsmi: "İlk kart",

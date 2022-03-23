@@ -1,10 +1,13 @@
+import 'dart:collection';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
 import 'package:qrd_qr_card_ui/data/date_date.dart';
-import 'package:qrd_qr_card_ui/screens/Setting_screen.dart';
+import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:units_converter/units_converter.dart';
 
 deneme() {}
@@ -48,6 +51,14 @@ class _MyCardState extends State<MyCard> {
     var deneme = MediaQuery.of(context);
     return GestureDetector(
       onTap: () {
+        var refKisiler =
+            FirebaseDatabase.instance.ref().child("Kartlar tablosu");
+        var kartId = HashMap<String, dynamic>();
+        kartId["kart id"] = widget.card.index.toString();
+        var kartName = HashMap<String, dynamic>();
+        refKisiler.push().set(kartId);
+        refKisiler.push().set(kartName);
+
         var convert = NumeralSystems()
           ..convert(NUMERAL_SYSTEMS.decimal, widget.card.index.toString());
         return showDialog(
@@ -67,10 +78,9 @@ class _MyCardState extends State<MyCard> {
                         child: QrImage(
                           data: convert.hexadecimal.stringValue,
                           version: QrVersions.min,
-                          foregroundColor: Colors.white,
+                          foregroundColor: otherColor(isDarkTheme),
                         ),
                       ),
-                      Text(convert.hexadecimal.stringValue)
                     ],
                   ));
             });
@@ -94,7 +104,7 @@ class _MyCardState extends State<MyCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kart İsmi",
+                      "kart İsmi",
                       style: ApptextStyle.MY_CARD_TITLE,
                     ),
                     Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
-import 'package:qrd_qr_card_ui/screens/Setting_screen.dart';
+import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/widgets/my_card.dart';
 import 'dart:math';
 
@@ -10,6 +10,15 @@ class CardScreen extends StatefulWidget {
 
   @override
   State<CardScreen> createState() => _CardScreenState();
+}
+
+class Kisiler {
+  String kisi_ad;
+  int kisi_yas;
+  Kisiler(this.kisi_ad, this.kisi_yas);
+  factory Kisiler.fromJson(Map<dynamic, dynamic> json) {
+    return Kisiler(json["kisi_ad"] as String, json["kisi_yas"] as int);
+  }
 }
 
 class _CardScreenState extends State<CardScreen> {

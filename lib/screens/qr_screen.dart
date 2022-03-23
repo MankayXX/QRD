@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-import 'package:qrd_qr_card_ui/data/card_data.dart';
-import 'package:qrd_qr_card_ui/screens/Setting_screen.dart';
-import 'package:qrd_qr_card_ui/widgets/my_card.dart';
+import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -103,8 +101,9 @@ class _QrScreenState extends State<QrScreen> {
             Stack(children: [
               Center(
                 child: QrImage(
-                  data: "open: www.instagram.com",
+                  data: "www.instagram.com",
                   version: QrVersions.auto,
+                  gapless: true,
                   size: 200.0,
                   foregroundColor: Colors.white,
                 ),
