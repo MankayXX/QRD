@@ -1,2 +1,3 @@
 # QRD
-A flutter based mobile business card app
+A QR Code based mobile Business Card app
+
