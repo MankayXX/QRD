@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
 import 'package:qrd_qr_card_ui/data/transaction_data.dart';
-import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/widgets/my_card.dart';
 import 'package:qrd_qr_card_ui/widgets/transaction_card.dart';
 import 'dart:math';
+
+import '../Other_screens/theme_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'dart:collection';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -7,6 +7,7 @@ import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
 import 'package:qrd_qr_card_ui/data/date_date.dart';
+import 'package:qrd_qr_card_ui/screens/base_screen.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:units_converter/units_converter.dart';
 
@@ -43,6 +44,8 @@ String linklers(List link) {
   }
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
 TextEditingController _textFieldController3 = TextEditingController();
 
 class _MyCardState extends State<MyCard> {
@@ -51,16 +54,21 @@ class _MyCardState extends State<MyCard> {
     var deneme = MediaQuery.of(context);
     return GestureDetector(
       onTap: () {
-        var refKisiler =
-            FirebaseDatabase.instance.ref().child("Kartlar tablosu");
-        var kartId = HashMap<String, dynamic>();
-        kartId["kart id"] = widget.card.index.toString();
-        var kartName = HashMap<String, dynamic>();
-        refKisiler.push().set(kartId);
-        refKisiler.push().set(kartName);
-
+        var user = FirebaseDatabase.instance.ref().child("Cards table");
+        var kartInfo = HashMap();
+        kartInfo["card id"] = widget.card.index.toString();
+        kartInfo["card name"] = widget.card.kartIsmi.toString();
+        kartInfo["card links"] = widget.card.linkler.toString();
+        kartInfo["card date"] = widget.card.oTarihi.toString();
+        kartInfo["card auth"] = _auth.currentUser.displayName.toString();
+        user.push().set(kartInfo);
         var convert = NumeralSystems()
           ..convert(NUMERAL_SYSTEMS.decimal, widget.card.index.toString());
+        QrImage deneme = QrImage(
+          data: convert.hexadecimal.stringValue,
+          version: QrVersions.min,
+          foregroundColor: otherColor(isDarkTheme),
+        );
         return showDialog(
             context: context,
             builder: (context) {
@@ -72,15 +80,7 @@ class _MyCardState extends State<MyCard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 200.0,
-                        height: 200.0,
-                        child: QrImage(
-                          data: convert.hexadecimal.stringValue,
-                          version: QrVersions.min,
-                          foregroundColor: otherColor(isDarkTheme),
-                        ),
-                      ),
+                      Container(width: 200.0, height: 200.0, child: deneme),
                     ],
                   ));
             });
