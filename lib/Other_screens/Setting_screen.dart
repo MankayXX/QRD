@@ -3,6 +3,7 @@ import 'package:qrd_qr_card_ui/Other_screens/about_screen.dart';
 import 'package:qrd_qr_card_ui/screens/profile_screen.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
+import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key key}) : super(key: key);
@@ -246,6 +247,40 @@ class _SettingScreenState extends State<SettingScreen> {
                                         SizedBox(width: 15),
                                         Text(
                                           "Yardım",
+                                          style: TextStyle(
+                                              color: otherColor(isDarkTheme),
+                                              fontWeight: FontWeight.w100,
+                                              fontSize: 18),
+                                        ),
+                                      ]),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )),
+                        SizedBox(height: 15),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => SignInDemo()));
+                            },
+                            child: Container(
+                              width: 550,
+                              height: 35,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(children: [
+                                        Icon(Icons.lock_outline),
+                                        SizedBox(width: 15),
+                                        Text(
+                                          "Hesap",
                                           style: TextStyle(
                                               color: otherColor(isDarkTheme),
                                               fontWeight: FontWeight.w100,

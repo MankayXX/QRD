@@ -1,12 +1,8 @@
-import 'dart:math';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
-import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-
 import '../Other_screens/Setting_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,6 +15,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    GoogleSignInAccount _currentUser;
+    final GoogleSignInAccount user = _currentUser;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: bgColor(isDarkTheme),
@@ -79,14 +77,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
+
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            AssetImage("assets/pictures/profile_pic.jpeg"),
-                        radius: 50,
-                      ),
                       Column(children: [
                         Text("4",
                             style: TextStyle(

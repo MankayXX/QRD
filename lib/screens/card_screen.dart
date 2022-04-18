@@ -12,15 +12,6 @@ class CardScreen extends StatefulWidget {
   State<CardScreen> createState() => _CardScreenState();
 }
 
-class Kisiler {
-  String kisi_ad;
-  int kisi_yas;
-  Kisiler(this.kisi_ad, this.kisi_yas);
-  factory Kisiler.fromJson(Map<dynamic, dynamic> json) {
-    return Kisiler(json["kisi_ad"] as String, json["kisi_yas"] as int);
-  }
-}
-
 class _CardScreenState extends State<CardScreen> {
   @override
   Widget build(BuildContext context) {
@@ -114,26 +105,6 @@ class _CardScreenState extends State<CardScreen> {
                         cardSettings(context, index).then((exit) {
                           setState(() {});
                         });
-                      },
-                      onTap: () {
-                        return showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                  backgroundColor: srcColor(isDarkTheme),
-                                  content: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text("🛠 Bitmedi 🛠",
-                                          style: TextStyle(color: Colors.red)),
-                                      Text("QR Kod",
-                                          style: TextStyle(
-                                              color: otherColor(isDarkTheme))),
-                                    ],
-                                  ));
-                            });
                       },
                       child: MyCard(
                         card: myCards[index],

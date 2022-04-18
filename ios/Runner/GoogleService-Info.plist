@@ -19,18 +19,20 @@
 	<key>STORAGE_BUCKET</key>
 	<string>qard-da1a2.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:76445662897:ios:d31f1d60432342c5976c90</string>
 	<key>DATABASE_URL</key>
 	<string>https://qard-da1a2-default-rtdb.europe-west1.firebasedatabase.app</string>
+	<key>CFBundleIdentifier</key>
+	<string>76445662897-rek67nbgjai47acqfh23fm947hmlpl67.apps.googleusercontent.com</string>
 </dict>
 </plist>

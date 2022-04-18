@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "76445662897",
+    "firebase_url": "https://qard-da1a2-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "qard-da1a2",
+    "storage_bucket": "qard-da1a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76445662897:android:6257ca890cb6a9a8976c90",
+        "android_client_info": {
+          "package_name": "com.qr_card.name"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76445662897-rh62lam4o84e65tu3kb7pk0l6qr0eihs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qr_card.name",
+            "certificate_hash": "4adbaf3738c83bb31d54979bd9d197c43fe0b0f6"
+          }
+        },
+        {
+          "client_id": "76445662897-9tdmm23qp4aml1mbf5kludaqb2qc0f8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmiRoZJXNWyzbcMqpba_XctZZTPr0afWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76445662897-9tdmm23qp4aml1mbf5kludaqb2qc0f8g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "76445662897-rek67nbgjai47acqfh23fm947hmlpl67.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.qrd.name"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

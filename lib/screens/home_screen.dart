@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Text("🛠 Bitmedi 🛠",
                                   style: TextStyle(color: Colors.red)),
-                              Text("Profil Resmi Ekranı",
+                              Text(FirebaseAuth.instance.currentUser.email,
                                   style: TextStyle(
                                       color: otherColor(isDarkTheme))),
                             ],

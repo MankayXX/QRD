@@ -19,6 +19,7 @@ version: 1.1.5
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  flutter: "2.10.4"
 
 dependencies:
   flutter:
@@ -48,6 +49,7 @@ dependencies:
   cloud_firestore_web: ^2.6.9
   firebase_storage: ^10.2.9
   google_sign_in: ^5.2.4
+  qr_code_scanner: ^0.7.0
 
 flutter_icons:
   image_path_ios: "icons/ios_full.png" 

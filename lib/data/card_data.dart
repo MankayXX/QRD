@@ -21,6 +21,7 @@ extension CapExtension on String {
 
 int static_index = 100;
 List arr = ["qrd"];
+
 CardModel ilkKart = new CardModel(
     kartIsmi: "İlk kart",
     linkler: arr,
@@ -28,7 +29,10 @@ CardModel ilkKart = new CardModel(
     index: static_index,
     kartRenk: randomColor());
 
+CardModel kucukIlk = ilkKart;
+
 List<CardModel> myCards = [ilkKart];
+List<CardModel> myLittleCards = [kucukIlk];
 
 addCard(String isim, List link) {
   static_index++;
@@ -41,6 +45,23 @@ addCard(String isim, List link) {
   );
 
   myCards.add(a);
+  myLittleCards.add(a);
+  _textFieldController2.clear();
+  _textFieldController.clear();
+}
+
+addExistCard(String isim, List link, Color renk) {
+  static_index++;
+  CardModel a = new CardModel(
+    kartIsmi: isim,
+    linkler: link,
+    index: static_index,
+    oTarihi: fullDate(),
+    kartRenk: renk,
+  );
+
+  myCards.add(a);
+  myLittleCards.add(a);
 }
 
 TextEditingController _textFieldController = TextEditingController();
@@ -85,22 +106,6 @@ displayTextInputDialog(BuildContext context) async {
                 onPressed: () {
                   // TODO her renk için bir buton ve butonların rengi kendi renkleri olmalı
                 }),
-            /*
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Container(
-                color: Colors.red,
-                child: PopupMenuButton<String>(
-                    icon: Icon(Icons.access_alarm),
-                    onSelected: choiceAction,
-                    itemBuilder: (BuildContext context) {
-                      return Contasts.choices.map((String choice) {
-                        return PopupMenuItem<String>(
-                            value: choice, child: Text(choice));
-                      }).toList();
-                    }),
-              ),
-            ),*/
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: ElevatedButton(
@@ -116,13 +121,11 @@ displayTextInputDialog(BuildContext context) async {
                   ),
                 ),
                 onPressed: () {
-                  List linkler = _textFieldController2.text.split(' ');
                   if (_textFieldController.text.isNotEmpty == true &&
                       _textFieldController2.text.isNotEmpty == true) {
-                    addCard(_textFieldController.text, linkler);
+                    addCard(_textFieldController.text,
+                        _textFieldController2.text.split(" "));
                     addTransactionModel('Bir kart oluşturdu');
-                    _textFieldController.clear();
-                    _textFieldController2.clear();
                     Navigator.of(context).pop();
                   } else {
                     return showDialog(
@@ -133,6 +136,9 @@ displayTextInputDialog(BuildContext context) async {
                           );
                         });
                   }
+
+                  _textFieldController.clear();
+                  _textFieldController2.clear();
                 },
               ),
             ),
@@ -141,28 +147,6 @@ displayTextInputDialog(BuildContext context) async {
       );
     },
   );
-}
-
-void choiceAction(String choice) {
-  if (choice == Contasts.FirstItem) {
-    print("I First Item");
-  } else if (choice == Contasts.SecondItem) {
-    print("I Second Item");
-  } else if (choice == Contasts.LastItem) {
-    print("I Last Item");
-  }
-}
-
-class Contasts {
-  static const String FirstItem = "deneme 1";
-  static const String SecondItem = "deneme 2";
-  static const String LastItem = "deneme 3";
-
-  static const List<String> choices = <String>[
-    FirstItem,
-    SecondItem,
-    LastItem,
-  ];
 }
 
 displayTextInputDialog2(BuildContext context) async {
@@ -184,8 +168,6 @@ displayTextInputDialog2(BuildContext context) async {
             ElevatedButton(
               child: Text("Kaydet"),
               onPressed: () {
-                //launchURL(_textFieldController.text, 1);
-
                 return showDialog(
                     context: context,
                     builder: (context) {
@@ -244,6 +226,8 @@ cardSettings(BuildContext context, int index) async {
               onTap: () {
                 if (myCards.length - 1 > 0) {
                   myCards.removeAt(index);
+                  myLittleCards.removeAt(index);
+                  static_index--;
                   addTransactionModel("Bir kart sildi");
                   Navigator.of(context).pop();
                 } else {
@@ -328,6 +312,7 @@ displayTextInputDialog3(BuildContext context, int index) async {
                 onPressed: () {
                   List linkler = _textFieldController2.text.split(' ');
                   //Sadece İsim değişiyor
+
                   if (_textFieldController.text.isNotEmpty &&
                       _textFieldController2.text.isEmpty) {
                     changeCard(_textFieldController.text.inCaps,

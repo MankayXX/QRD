@@ -7,11 +7,8 @@ import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
 import 'package:qrd_qr_card_ui/data/date_date.dart';
-import 'package:qrd_qr_card_ui/screens/base_screen.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:units_converter/units_converter.dart';
-
-deneme() {}
 
 class MyCard extends StatefulWidget {
   final CardModel card;
@@ -23,48 +20,44 @@ class MyCard extends StatefulWidget {
 
 String linklers(List link) {
   int sum = 0;
-  for (var i = 0; i < link.length; i++) {
+  for (int i = 0; i < link.length; i++) {
     sum += link[i].length;
   }
-  if (link.length > 1 && link.length <= 2 && sum < 15) {
+  if (link.length == 2 && sum < 15) {
     return '${link[0]}, ${link[1]}'.toUpperCase();
-  } else if (link.length > 2 && link.length <= 3 && sum < 15) {
+  } else if (link.length == 3 && sum < 15) {
     return '${link[0]}, ${link[1]}, ${link[2]}'.toUpperCase();
-  } else if (link.length > 3 && link.length <= 4 && sum < 15) {
+  } else if (link.length == 4 && sum < 15) {
     return '${link[0]}, ${link[1]}, ${link[2]}, ${link[3]}'.toUpperCase();
-  } else if (link.length > 4 && link.length <= 5 && sum < 15) {
+  } else if (link.length == 5 && sum < 15) {
     return '${link[0]}, ${link[1]}, ${link[2]}, ${link[3]}, ${link[4]}'
         .toUpperCase();
   } else if (link.length == 1 && sum < 15) {
     return '${link[0]}'.toUpperCase();
-  } else if (sum > 15) {
-    return '${link[0]}, ${link[1]}...'.toUpperCase();
   } else {
-    return '${link[0]}, ${link[1]}...'.toUpperCase();
+    return '${link[0]} ...'.toUpperCase();
   }
 }
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 TextEditingController _textFieldController3 = TextEditingController();
 
 class _MyCardState extends State<MyCard> {
   @override
   Widget build(BuildContext context) {
-    var deneme = MediaQuery.of(context);
+    var ekran = MediaQuery.of(context);
     return GestureDetector(
       onTap: () {
         var user = FirebaseDatabase.instance.ref().child("Cards table");
         var kartInfo = HashMap();
         kartInfo["card id"] = widget.card.index.toString();
+        kartInfo["user name"] = "mert mankay"; //todo burası da dinamik değil
         kartInfo["card name"] = widget.card.kartIsmi.toString();
         kartInfo["card links"] = widget.card.linkler.toString();
         kartInfo["card date"] = widget.card.oTarihi.toString();
-        kartInfo["card auth"] = _auth.currentUser.displayName.toString();
         user.push().set(kartInfo);
         var convert = NumeralSystems()
           ..convert(NUMERAL_SYSTEMS.decimal, widget.card.index.toString());
-        QrImage deneme = QrImage(
+        QrImage qr = QrImage(
           data: convert.hexadecimal.stringValue,
           version: QrVersions.min,
           foregroundColor: otherColor(isDarkTheme),
@@ -80,7 +73,7 @@ class _MyCardState extends State<MyCard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(width: 200.0, height: 200.0, child: deneme),
+                      Container(width: 200.0, height: 200.0, child: qr),
                     ],
                   ));
             });
@@ -88,7 +81,7 @@ class _MyCardState extends State<MyCard> {
       child: Container(
         padding: EdgeInsets.all(20),
         height: 200,
-        width: deneme.size.width - 40,
+        width: ekran.size.width - 40,
         decoration: BoxDecoration(
             color: widget.card.kartRenk,
             borderRadius: BorderRadius.circular(20)),
@@ -163,7 +156,11 @@ class _MyCardState extends State<MyCard> {
                                                               _textFieldController3,
                                                           decoration:
                                                               InputDecoration(
-                                                            hintText: "Link",
+                                                            hintText: widget
+                                                                        .card
+                                                                        .linkler[
+                                                                    index] +
+                                                                " linki",
                                                             hintStyle: TextStyle(
                                                                 color: otherColor(
                                                                     isDarkTheme)),
@@ -197,38 +194,15 @@ class _MyCardState extends State<MyCard> {
                                                                   primary:
                                                                       randomColor()),
                                                           child: Text(
-                                                            "                        Kaydet                        ", //bu şekilde çözebildim xd
+                                                            "Kaydet",
                                                             style: TextStyle(
                                                               fontFamily:
                                                                   "Poppins",
                                                             ),
                                                           ),
                                                           onPressed: () {
-                                                            return showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (context) {
-                                                                  return AlertDialog(
-                                                                      backgroundColor:
-                                                                          srcColor(
-                                                                              isDarkTheme),
-                                                                      content:
-                                                                          Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          Text(
-                                                                              "🛠 Bitmedi 🛠",
-                                                                              style: TextStyle(color: Colors.red)),
-                                                                          Text(
-                                                                              "Link Ekranı",
-                                                                              style: TextStyle(color: otherColor(isDarkTheme))),
-                                                                        ],
-                                                                      ));
-                                                                });
+                                                            Navigator.pop(
+                                                                context);
                                                           },
                                                         ),
                                                       )
@@ -262,7 +236,6 @@ class _MyCardState extends State<MyCard> {
                         )
                       ],
                     ),
-                    SizedBox(width: 20),
                   ],
                 )
               ],
@@ -276,10 +249,12 @@ class _MyCardState extends State<MyCard> {
                   children: [
                     Text(
                       "Kart Sahibi",
+                      textAlign: TextAlign.right,
                       style: ApptextStyle.MY_CARD_TITLE,
                     ),
                     Text(
-                      "Mert Mankay",
+                      "Mert Mankay", //TODO buraya kullanıcı adı gelecek
+                      textAlign: TextAlign.right,
                       style: ApptextStyle.MY_CARD_SUBTITLE,
                     ),
                   ],

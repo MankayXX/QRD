@@ -1,115 +1,160 @@
-import 'package:flutter/material.dart';
-import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
-import 'dart:math';
-import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'dart:developer';
+import 'dart:io';
 
-class QrScreen extends StatefulWidget {
-  const QrScreen({Key key}) : super(key: key);
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import '../Other_screens/theme_screen.dart';
+import '../constants/color_constants.dart';
+import '../data/card_data.dart';
+import '../widgets/my_little_card.dart';
+import 'home_Screen.dart';
+
+class QRViewExample extends StatefulWidget {
+  const QRViewExample({Key key}) : super(key: key);
+
   @override
-  _QrScreenState createState() => _QrScreenState();
+  State<StatefulWidget> createState() => _QRViewExampleState();
 }
 
-class _QrScreenState extends State<QrScreen> {
-  String imageUrl;
-  String word;
-  bool color = false;
+class _QRViewExampleState extends State<QRViewExample> {
+  Barcode result;
+  QRViewController controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  // In order to get hot reload to work we need to pause the camera if the platform
+  // is android, or resume the camera if the platform is iOS.
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller.pauseCamera();
+    }
+    controller.resumeCamera();
+  }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: bgColor(isDarkTheme),
-          elevation: 0,
-          centerTitle: true,
-          title: qrdLogo(isDarkTheme),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: GestureDetector(
-                onTap: () {
-                  return showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            backgroundColor: srcColor(isDarkTheme),
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text("🛠 Bitmedi 🛠",
-                                    style: TextStyle(color: Colors.red)),
-                                Text("Profil Resmi Ekranı",
-                                    style: TextStyle(
-                                        color: otherColor(isDarkTheme))),
-                              ],
-                            ));
-                      });
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)],
-                  radius: 19,
-                  child: CircleAvatar(
-                    backgroundImage:
-                        AssetImage("assets/pictures/profile_pic.jpeg"),
-                    radius: 17,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        title: qrdLogo(true),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(flex: 12, child: _buildQrView(context)),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  child: IconButton(
+                    icon: Icon(Icons.flash_on, color: Colors.white),
+                    onPressed: () async {
+                      await controller?.toggleFlash();
+                      setState(() {});
+                    },
                   ),
                 ),
-              ),
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  child: IconButton(
+                      icon:
+                          Icon(Icons.cameraswitch_rounded, color: Colors.white),
+                      onPressed: () async {
+                        await controller?.flipCamera();
+                        setState(() {});
+                      }),
+                )
+              ],
             ),
-          ),
-          actions: [
-            IconButton(
-                icon: Icon(
-                  Icons.notifications_none,
-                  color: otherColor(isDarkTheme),
-                  size: 27,
-                ),
-                onPressed: () {
-                  return showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            backgroundColor: srcColor(isDarkTheme),
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text("🛠 Bitmedi 🛠",
-                                    style: TextStyle(color: Colors.red)),
-                                Text("Bildirim Ekranı",
-                                    style: TextStyle(
-                                        color: otherColor(isDarkTheme))),
-                              ],
-                            ));
-                      });
-                })
-          ],
-        ),
-        body: ListView(children: [
-          Center(
-              child: Column(children: [
-            SizedBox(height: 20),
-            Stack(children: [
-              Center(
-                child: QrImage(
-                  data: "www.instagram.com",
-                  version: QrVersions.auto,
-                  gapless: true,
-                  size: 200.0,
-                  foregroundColor: Colors.white,
-                ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQrView(BuildContext context) {
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: _onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+          borderRadius: 30, borderLength: 0, borderWidth: 0, cutOutSize: 300.0),
+      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    );
+  }
+
+  int sayac = 0;
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
+    controller.scannedDataStream.listen((scanData) {
+      sayac++;
+      setState(() {
+        result = scanData;
+        print(sayac);
+      });
+      if (sayac == 1) {
+        cardWiev(context, result).then((exit) => setState(() {
+              sayac = 0;
+            }));
+      }
+    });
+  }
+
+  cardWiev(context, result) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: srcColor(isDarkTheme),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            content: (Container(
+              height: 200,
+              width: MediaQuery.of(context).size.width - 40,
+              child: MyLittleCard(
+                little_card: a(result),
               ),
-            ]),
-          ])),
-        ]));
+            )),
+          );
+        });
+  }
+
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
+}
+
+CardModel a(Barcode b) {
+  int sayac = 0;
+  for (int i = 0; i < myLittleCards.length; i++) {
+    if (myLittleCards[i].index.toString() == b.code.toString()) {
+      sayac++;
+      return myLittleCards[i];
+    }
+  }
+  if (sayac == 0) {
+    return myLittleCards[0];
   }
 }

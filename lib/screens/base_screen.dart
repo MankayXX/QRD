@@ -4,7 +4,6 @@ import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/screens/explore_screen.dart';
 import 'package:qrd_qr_card_ui/screens/home_Screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:qrd_qr_card_ui/Other_screens/Setting_screen.dart';
 import 'package:qrd_qr_card_ui/screens/profile_screen.dart';
 import 'package:qrd_qr_card_ui/screens/qr_screen.dart';
 import 'card_screen.dart';
@@ -23,22 +22,33 @@ class _BaseScreenState extends State<BaseScreen> {
 
   var ekranlar;
 
-  List<Widget> _login() {
+  List _login() {
     if (_auth.currentUser == null) {
       return [
-        LoginScreen(),
+        SignInDemo(),
       ];
     } else {
       return [
         HomeScreen(),
         ExploreScreen(),
-        QrScreen(),
+        QRViewExample(),
         CardScreen(),
         ProfileScreen(),
       ];
     }
   }
 
+  List screens() {
+    return [
+      HomeScreen(),
+      ExploreScreen(),
+      QRViewExample(),
+      CardScreen(),
+      ProfileScreen(),
+    ];
+  }
+  //TODO kullanıcı giriş ekranını şimdilik kapatıyorum, çok fazla hata alıyorum.
+/*
   _ekranlar() {
     if (_auth.currentUser == null) {
       return ekranlar = [
@@ -59,13 +69,13 @@ class _BaseScreenState extends State<BaseScreen> {
             icon: Icon(FontAwesomeIcons.solidUser), label: "Profil"),
       ];
     }
-  }
+  */
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _login().elementAt(_selectedIndex),
+        child: screens().elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
           elevation: 0,
@@ -73,7 +83,18 @@ class _BaseScreenState extends State<BaseScreen> {
           backgroundColor: bgColor(isDarkTheme),
           selectedItemColor: abColor(isDarkTheme),
           unselectedItemColor: Colors.grey,
-          items: _ekranlar(),
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.home), label: "Anasayfa"),
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.search), label: "Keşfet"),
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.qrcode), label: "Tara"),
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.idCard), label: "Kartlar"),
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.solidUser), label: "Profil"),
+          ],
           currentIndex: _selectedIndex,
           onTap: (int index) {
             setState(() {

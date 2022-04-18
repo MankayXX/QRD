@@ -1,184 +1,147 @@
-import 'dart:math';
-import 'package:firebase_auth/firebase_auth.dart';
+// Copyright 2013 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// ignore_for_file: public_member_api_docs
+
+import 'dart:async';
+import 'dart:convert' show json;
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import '../Other_screens/theme_screen.dart';
-import '../constants/color_constants.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key key}) : super(key: key);
+GoogleSignIn _googleSignIn = GoogleSignIn(
+);
 
+class SignInDemo extends StatefulWidget {
   @override
-  State<LoginScreen> createState() => LoginScreenState();
+  State createState() => SignInDemoState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
-  final emailController = new TextEditingController();
-  final passwordController = new TextEditingController();
+class SignInDemoState extends State<SignInDemo> {
+  GoogleSignInAccount _currentUser;
+  String _contactText = '';
 
-  String errorMessage = '';
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+      setState(() {
+        _currentUser = account;
+      });
+      if (_currentUser != null) {
+        _handleGetContact(_currentUser);
+      }
+    });
+    _googleSignIn.signInSilently();
+  }
+
+  Future<void> _handleGetContact(GoogleSignInAccount user) async {
+    setState(() {
+      _contactText = 'Loading contact info...';
+    });
+    final http.Response response = await http.get(
+      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
+          'requestMask.includeField=person.names'),
+      headers: await user.authHeaders,
+    );
+    if (response.statusCode != 200) {
+      setState(() {
+        _contactText = 'People API gave a ${response.statusCode} '
+            'response. Check logs for details.';
+      });
+      print('People API ${response.statusCode} response: ${response.body}');
+      return;
+    }
+    final Map<String, dynamic> data =
+        json.decode(response.body) as Map<String, dynamic>;
+    final String namedContact = _pickFirstNamedContact(data);
+    setState(() {
+      if (namedContact != null) {
+        _contactText = 'I see you know $namedContact!';
+      } else {
+        _contactText = 'No contacts to display.';
+      }
+    });
+  }
+
+  String _pickFirstNamedContact(Map<String, dynamic> data) {
+    final List<dynamic> connections = data['connections'] as List<dynamic>;
+    final Map<String, dynamic> contact = connections.firstWhere(
+      (dynamic contact) => contact['names'] != null,
+      orElse: () => null,
+    ) as Map<String, dynamic>;
+    if (contact != null) {
+      final Map<String, dynamic> name = contact['names'].firstWhere(
+        (dynamic name) => name['displayName'] != null,
+        orElse: () => null,
+      ) as Map<String, dynamic>;
+      if (name != null) {
+        return name['displayName'] as String;
+      }
+    }
+    return null;
+  }
+
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
+
+  Widget _buildBody() {
+    final GoogleSignInAccount user = _currentUser;
+    if (user != null) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          ListTile(
+            leading: GoogleUserCircleAvatar(
+              identity: user,
+            ),
+            title: Text(user.displayName),
+            subtitle: Text(user.email),
+          ),
+          const Text('Signed in successfully.'),
+          Text(_contactText),
+          ElevatedButton(
+            child: const Text('SIGN OUT'),
+            onPressed: _handleSignOut,
+          ),
+          ElevatedButton(
+            child: const Text('REFRESH'),
+            onPressed: () => _handleGetContact(user),
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          const Text('You are not currently signed in.'),
+          ElevatedButton(
+            child: const Text('SIGN IN'),
+            onPressed: _handleSignIn,
+          ),
+        ],
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
-    final emailController = new TextEditingController();
-    final passwordController = new TextEditingController();
-    final GlobalKey<FormState> _key = new GlobalKey<FormState>();
-    String errorMessage = '';
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: bgColor(isDarkTheme),
-          elevation: 0,
-          centerTitle: true,
-          title: qrdLogo(isDarkTheme),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: GestureDetector(
-                onTap: () {
-                  return showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            backgroundColor: srcColor(isDarkTheme),
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text("🛠 Bitmedi 🛠",
-                                    style: TextStyle(color: Colors.red)),
-                                Text("Profil Resmi Ekranı",
-                                    style: TextStyle(
-                                        color: otherColor(isDarkTheme))),
-                              ],
-                            ));
-                      });
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors
-                      .primaries[Random().nextInt(Colors.primaries.length)],
-                  radius: 19,
-                  child: CircleAvatar(
-                    backgroundImage:
-                        AssetImage("assets/pictures/profile_pic.jpeg"),
-                    radius: 17,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          actions: [
-            IconButton(
-                icon: Icon(
-                  Icons.notifications_none,
-                  color: otherColor(isDarkTheme),
-                  size: 27,
-                ),
-                onPressed: () {
-                  return showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            backgroundColor: srcColor(isDarkTheme),
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text("🛠 Bitmedi 🛠",
-                                    style: TextStyle(color: Colors.red)),
-                                Text("Bildirim Ekranı",
-                                    style: TextStyle(
-                                        color: otherColor(isDarkTheme))),
-                              ],
-                            ));
-                      });
-                })
-          ],
+          title: const Text('Google Sign In'),
         ),
-        body: Form(
-          key: _key,
-          child: Center(
-              child: Column(
-            children: [
-              TextFormField(
-                controller: emailController,
-                validator: validateEmail,
-              ),
-              TextFormField(
-                controller: passwordController,
-                validator: validatePassword,
-              ),
-              Center(
-                child: Text(errorMessage),
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                ElevatedButton(
-                    onPressed: () async {
-                      if (_key.currentState.validate()) {
-                        try {
-                          await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          );
-                          errorMessage = "";
-                        } on FirebaseAuthException catch (error) {
-                          errorMessage = error.message;
-                        }
-                      }
-
-                      setState(() {});
-                    },
-                    child: Text("Sign In")),
-                ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: emailController.text,
-                          password: passwordController.text);
-                      setState(() {});
-                    },
-                    child: Text("Sign Up ")),
-                ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                      setState(() {});
-                    },
-                    child: Text("Log Out")),
-              ])
-            ],
-          )),
+        body: ConstrainedBox(
+          constraints: const BoxConstraints.expand(),
+          child: _buildBody(),
         ));
   }
-}
-
-String validateEmail(String formEmail) {
-  if (formEmail == null || formEmail.isEmpty) {
-    return "Email address is required.";
-  }
-  String pattern = r"\w+@\w+\.\w+";
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formEmail)) {
-    return "Invalid Email address format.";
-  }
-  return null;
-}
-
-String validatePassword(String formPassword) {
-  if (formPassword == null || formPassword.isEmpty) {
-    return "Password is required.";
-  }
-  String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formPassword))
-    return '''
-      Password must be at least 8 characters,
-      include an uppercase letter, number and symbol.
-      ''';
-  return null;
 }
