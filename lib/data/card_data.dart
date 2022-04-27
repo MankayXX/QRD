@@ -4,6 +4,14 @@ import 'package:qrd_qr_card_ui/data/transaction_data.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 
+import 'package:o_color_picker/o_color_picker.dart';
+
+//*************************************************************************************************
+
+Color selectedColor = Colors.lightGreen[300];
+
+//*************************************************************************************************
+
 class CardModel {
   String kartIsmi;
   List linkler;
@@ -34,14 +42,14 @@ CardModel kucukIlk = ilkKart;
 List<CardModel> myCards = [ilkKart];
 List<CardModel> myLittleCards = [kucukIlk];
 
-addCard(String isim, List link) {
+addCard(String isim, List link, Color color) {
   static_index++;
   CardModel a = new CardModel(
     kartIsmi: isim,
     linkler: link,
     index: static_index,
     oTarihi: fullDate(),
-    kartRenk: randomColor(),
+    kartRenk: color,
   );
 
   myCards.add(a);
@@ -102,10 +110,27 @@ displayTextInputDialog(BuildContext context) async {
                   focusedBorder: UnderlineInputBorder(),
                 )),
             ElevatedButton(
-                child: Text("Renk"),
-                onPressed: () {
-                  // TODO her renk için bir buton ve butonların rengi kendi renkleri olmalı
-                }),
+              child: Text("Renk"),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => Material(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              OColorPicker(
+                                selectedColor: selectedColor,
+                                colors: primaryColorsPalette,
+                                onColorChange: (color) {
+                                  selectedColor = color;
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        ));
+              },
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: ElevatedButton(
@@ -124,7 +149,7 @@ displayTextInputDialog(BuildContext context) async {
                   if (_textFieldController.text.isNotEmpty == true &&
                       _textFieldController2.text.isNotEmpty == true) {
                     addCard(_textFieldController.text,
-                        _textFieldController2.text.split(" "));
+                        _textFieldController2.text.split(" "), selectedColor);
                     addTransactionModel('Bir kart oluşturdu');
                     Navigator.of(context).pop();
                   } else {

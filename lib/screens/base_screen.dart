@@ -25,7 +25,7 @@ class _BaseScreenState extends State<BaseScreen> {
   List _login() {
     if (_auth.currentUser == null) {
       return [
-        SignInDemo(),
+        LoginPage(),
       ];
     } else {
       return [

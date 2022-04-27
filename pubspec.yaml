@@ -50,6 +50,9 @@ dependencies:
   firebase_storage: ^10.2.9
   google_sign_in: ^5.2.4
   qr_code_scanner: ^0.7.0
+  cloud_firestore: ^3.1.12
+  file_picker: ^4.5.1
+  o_color_picker: ^1.0.2
 
 flutter_icons:
   image_path_ios: "icons/ios_full.png" 

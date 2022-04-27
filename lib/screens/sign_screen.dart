@@ -1,147 +1,169 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// ignore_for_file: public_member_api_docs
-
-import 'dart:async';
-import 'dart:convert' show json;
-
+import 'package:qrd_qr_card_ui/Other_screens/register.dart';
+import 'package:qrd_qr_card_ui/data/auth_data.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
+import 'package:qrd_qr_card_ui/screens/base_screen.dart';
 
-GoogleSignIn _googleSignIn = GoogleSignIn(
-);
-
-class SignInDemo extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  State createState() => SignInDemoState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class SignInDemoState extends State<SignInDemo> {
-  GoogleSignInAccount _currentUser;
-  String _contactText = '';
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      setState(() {
-        _currentUser = account;
-      });
-      if (_currentUser != null) {
-        _handleGetContact(_currentUser);
-      }
-    });
-    _googleSignIn.signInSilently();
-  }
-
-  Future<void> _handleGetContact(GoogleSignInAccount user) async {
-    setState(() {
-      _contactText = 'Loading contact info...';
-    });
-    final http.Response response = await http.get(
-      Uri.parse('https://people.googleapis.com/v1/people/me/connections'
-          'requestMask.includeField=person.names'),
-      headers: await user.authHeaders,
-    );
-    if (response.statusCode != 200) {
-      setState(() {
-        _contactText = 'People API gave a ${response.statusCode} '
-            'response. Check logs for details.';
-      });
-      print('People API ${response.statusCode} response: ${response.body}');
-      return;
-    }
-    final Map<String, dynamic> data =
-        json.decode(response.body) as Map<String, dynamic>;
-    final String namedContact = _pickFirstNamedContact(data);
-    setState(() {
-      if (namedContact != null) {
-        _contactText = 'I see you know $namedContact!';
-      } else {
-        _contactText = 'No contacts to display.';
-      }
-    });
-  }
-
-  String _pickFirstNamedContact(Map<String, dynamic> data) {
-    final List<dynamic> connections = data['connections'] as List<dynamic>;
-    final Map<String, dynamic> contact = connections.firstWhere(
-      (dynamic contact) => contact['names'] != null,
-      orElse: () => null,
-    ) as Map<String, dynamic>;
-    if (contact != null) {
-      final Map<String, dynamic> name = contact['names'].firstWhere(
-        (dynamic name) => name['displayName'] != null,
-        orElse: () => null,
-      ) as Map<String, dynamic>;
-      if (name != null) {
-        return name['displayName'] as String;
-      }
-    }
-    return null;
-  }
-
-  Future<void> _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  Future<void> _handleSignOut() => _googleSignIn.disconnect();
-
-  Widget _buildBody() {
-    final GoogleSignInAccount user = _currentUser;
-    if (user != null) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          ListTile(
-            leading: GoogleUserCircleAvatar(
-              identity: user,
-            ),
-            title: Text(user.displayName),
-            subtitle: Text(user.email),
-          ),
-          const Text('Signed in successfully.'),
-          Text(_contactText),
-          ElevatedButton(
-            child: const Text('SIGN OUT'),
-            onPressed: _handleSignOut,
-          ),
-          ElevatedButton(
-            child: const Text('REFRESH'),
-            onPressed: () => _handleGetContact(user),
-          ),
-        ],
-      );
-    } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          const Text('You are not currently signed in.'),
-          ElevatedButton(
-            child: const Text('SIGN IN'),
-            onPressed: _handleSignIn,
-          ),
-        ],
-      );
-    }
-  }
+  AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Google Sign In'),
+        body: Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Container(
+          height: size.height * .5,
+          width: size.width * .85,
+          decoration: BoxDecoration(
+              color: Colors.blue.withOpacity(.75),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(.75),
+                    blurRadius: 10,
+                    spreadRadius: 2)
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextField(
+                      controller: _emailController,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      cursorColor: Colors.white,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.mail,
+                          color: Colors.white,
+                        ),
+                        hintText: 'E-Mail',
+                        prefixText: ' ',
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusColor: Colors.white,
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                      )),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  TextField(
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      cursorColor: Colors.white,
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.vpn_key,
+                          color: Colors.white,
+                        ),
+                        hintText: 'Parola',
+                        prefixText: ' ',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        focusColor: Colors.white,
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                      )),
+                  SizedBox(
+                    height: size.height * 0.08,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      _authService
+                          .signIn(
+                              _emailController.text, _passwordController.text)
+                          .then((value) {
+                        return Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BaseScreen()));
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 2),
+                          //color: colorPrimaryShade,
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Center(
+                            child: Text(
+                          "Giriş yap",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        )),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterPage()));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 1,
+                          width: 75,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "Kayıt ol",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Container(
+                          height: 1,
+                          width: 75,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
-        body: ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: _buildBody(),
-        ));
+      ),
+    ));
   }
 }

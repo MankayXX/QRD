@@ -262,7 +262,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SignInDemo()));
+                                  builder: (context) => LoginPage()));
                             },
                             child: Container(
                               width: 550,
