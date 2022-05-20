@@ -1,14 +1,16 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
+import 'package:qrd_qr_card_ui/data/Connection.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
+import 'package:qrd_qr_card_ui/widgets/my_card.dart';
 import '../Other_screens/Setting_screen.dart';
-import 'package:path/path.dart' as path;
-import 'package:image_picker/image_picker.dart';
+import '../widgets/profile_card.dart';
+
+String deneme = "assets/pictures/blank-pp.jpeg";
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key key}) : super(key: key);
@@ -20,20 +22,13 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   PlatformFile pickedFile;
 
-  Future uploadFile() async {
-    final path = 'files/${pickedFile.name}';
-    final file = File(pickedFile.path);
-
-    final ref = FirebaseStorage.instance.ref().child(path);
-    ref.putFile(file);
-  }
-
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles();
-
-    setState(() {
-      pickedFile = result.files.first;
-    });
+    if (result != null) {
+      setState(() {
+        pickedFile = result.files.first;
+      });
+    }
   }
 
   @override
@@ -53,30 +48,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(children: [
                       GestureDetector(
                           onTap: () {
-                            return showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                      backgroundColor: srcColor(isDarkTheme),
-                                      content: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text("🛠 Bitmedi 🛠",
-                                              style:
-                                                  TextStyle(color: Colors.red)),
-                                          Text("Profiller menüsü",
-                                              style: TextStyle(
-                                                  color:
-                                                      otherColor(isDarkTheme))),
-                                        ],
-                                      ));
-                                });
+                            cikti();
                           },
-                          child: Icon(FontAwesomeIcons.chevronDown)),
+                          child: Icon(FontAwesomeIcons.chevronDown,
+                              color: otherColor(isDarkTheme))),
                       SizedBox(width: 10),
-                      Text("deneme")
+                      Text("mankay.xx",
+                          style: TextStyle(color: otherColor(isDarkTheme)))
                     ]),
                     GestureDetector(
                         onTap: () {
@@ -85,7 +63,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   builder: (context) => SettingScreen()))
                               .then((_) => setState(() {}));
                         },
-                        child: Icon(Icons.menu, size: 40)),
+                        child: Icon(Icons.menu,
+                            size: 40, color: otherColor(isDarkTheme))),
                   ],
                 )),
           ),
@@ -104,7 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       GestureDetector(
                           onTap: () {
                             selectFile().then((exit) {
-                              uploadFile();
                               print(pickedFile.path);
                             });
                           },
@@ -116,7 +94,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     height: 100,
                                     width: 100,
                                   )
-                                : Text("boş"),
+                                : Container(
+                                    width: 100,
+                                    height: 100,
+                                    child: Image.asset(
+                                        "assets/pictures/blank-pp.jpeg")),
                           )),
                       Column(children: [
                         Text(myCards.length.toString(),
@@ -131,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontSize: 16)),
                       ]),
                       Column(children: [
-                        Text("20",
+                        Text(otherCards.length.toString(),
                             style: TextStyle(
                                 color: bgColor(!isDarkTheme),
                                 fontWeight: FontWeight.w700,
@@ -143,7 +125,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontSize: 16)),
                       ]),
                     ],
-                  )
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.only(top: 20),
+                          child: ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: profileCards.length,
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  height: 20,
+                                );
+                              },
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onLongPress: () {
+                                    cardSettings(context, index).then((exit) {
+                                      setState(() {});
+                                    });
+                                  },
+                                  child: ProfileCard(
+                                    profile_card: profileCards[index],
+                                  ),
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
                 ]),
           ),
         ));

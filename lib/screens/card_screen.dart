@@ -76,7 +76,7 @@ class _CardScreenState extends State<CardScreen> {
                             children: [
                               Text("🛠 Bitmedi 🛠",
                                   style: TextStyle(color: Colors.red)),
-                              Text("Bildirim Ekranı",
+                              Text("Bildirimler",
                                   style: TextStyle(
                                       color: otherColor(isDarkTheme))),
                             ],

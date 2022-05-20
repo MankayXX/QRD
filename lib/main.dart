@@ -1,12 +1,14 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qrd_qr_card_ui/check.dart';
 import 'package:qrd_qr_card_ui/data/theme_data.dart';
 import 'package:qrd_qr_card_ui/screens/base_screen.dart';
+import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+bool isLogged = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
   runApp(ChangeNotifierProvider(
     child: MyApp(),
@@ -19,9 +21,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(builder: (context, ThemeProvider, child) {
       return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeProvider.getTheme,
-          home: BaseScreen());
+        debugShowCheckedModeBanner: false,
+        theme: ThemeProvider.getTheme,
+        home: Check(),
+      );
     });
+  }
+}
+
+aaaa(BuildContext context) async {
+  var loginData = await SharedPreferences.getInstance();
+  var newUser = (loginData.getBool("girdi_mi"));
+  print(newUser);
+  var a = true;
+  if (a) {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => BaseScreen()));
+  } else {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }

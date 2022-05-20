@@ -1,14 +1,6 @@
-import 'dart:collection';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
-import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
-import 'package:qrd_qr_card_ui/data/date_date.dart';
-import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
-import 'package:units_converter/units_converter.dart';
-
 import '../data/transaction_data.dart';
 
 class MyLittleCard extends StatefulWidget {
@@ -55,6 +47,7 @@ class _MyLitteCardState extends State<MyLittleCard> {
         addExistCard(isim, linkler, renk);
         addTransactionModel('Bir kart ekledi');
         Navigator.of(context).pop();
+        setState(() {});
       },
       child: Container(
         padding: EdgeInsets.all(20),

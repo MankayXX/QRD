@@ -1,6 +1,4 @@
 import 'dart:collection';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
@@ -47,14 +45,12 @@ class _MyCardState extends State<MyCard> {
     var ekran = MediaQuery.of(context);
     return GestureDetector(
       onTap: () {
-        var user = FirebaseDatabase.instance.ref().child("Cards table");
         var kartInfo = HashMap();
         kartInfo["card id"] = widget.card.index.toString();
         kartInfo["user name"] = "mert mankay"; //todo burası da dinamik değil
         kartInfo["card name"] = widget.card.kartIsmi.toString();
         kartInfo["card links"] = widget.card.linkler.toString();
         kartInfo["card date"] = widget.card.oTarihi.toString();
-        user.push().set(kartInfo);
         var convert = NumeralSystems()
           ..convert(NUMERAL_SYSTEMS.decimal, widget.card.index.toString());
         QrImage qr = QrImage(

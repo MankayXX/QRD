@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
+import 'package:qrd_qr_card_ui/data/Connection.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
 import 'package:qrd_qr_card_ui/data/transaction_data.dart';
 import 'package:qrd_qr_card_ui/widgets/my_card.dart';
 import 'package:qrd_qr_card_ui/widgets/transaction_card.dart';
 import 'dart:math';
-
 import '../Other_screens/theme_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Container(
             child: GestureDetector(
               onTap: () {
+                girdi_mi();
                 return showDialog(
                     context: context,
                     builder: (context) {
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Text("🛠 Bitmedi 🛠",
                                   style: TextStyle(color: Colors.red)),
-                              Text(FirebaseAuth.instance.currentUser.email,
+                              Text("Profil Resmi Ekranı",
                                   style: TextStyle(
                                       color: otherColor(isDarkTheme))),
                             ],
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Text("🛠 Bitmedi 🛠",
                                   style: TextStyle(color: Colors.red)),
-                              Text("Bildirim Ekranı",
+                              Text("Bildirimler",
                                   style: TextStyle(
                                       color: otherColor(isDarkTheme))),
                             ],

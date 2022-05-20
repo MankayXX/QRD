@@ -1,17 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../Other_screens/theme_screen.dart';
 import '../constants/color_constants.dart';
 import '../data/card_data.dart';
 import '../widgets/my_little_card.dart';
-import 'home_Screen.dart';
 
 class QRViewExample extends StatefulWidget {
   const QRViewExample({Key key}) : super(key: key);
@@ -57,7 +53,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                 Container(
                   margin: const EdgeInsets.all(8),
                   child: IconButton(
-                    icon: Icon(Icons.flash_on, color: Colors.white),
+                    icon: Icon(Icons.flash_on, color: otherColor(isDarkTheme)),
                     onPressed: () async {
                       await controller?.toggleFlash();
                       setState(() {});
@@ -67,8 +63,8 @@ class _QRViewExampleState extends State<QRViewExample> {
                 Container(
                   margin: const EdgeInsets.all(8),
                   child: IconButton(
-                      icon:
-                          Icon(Icons.cameraswitch_rounded, color: Colors.white),
+                      icon: Icon(Icons.cameraswitch_rounded,
+                          color: otherColor(isDarkTheme)),
                       onPressed: () async {
                         await controller?.flipCamera();
                         setState(() {});
@@ -101,7 +97,6 @@ class _QRViewExampleState extends State<QRViewExample> {
       sayac++;
       setState(() {
         result = scanData;
-        print(sayac);
       });
       if (sayac == 1) {
         cardWiev(context, result).then((exit) => setState(() {

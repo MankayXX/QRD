@@ -3,6 +3,7 @@ import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/widgets/my_card.dart';
+import 'package:qrd_qr_card_ui/widgets/other_card.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({Key key}) : super(key: key);
@@ -51,7 +52,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               padding: EdgeInsets.all(20),
               child: ListView.separated(
                   shrinkWrap: true,
-                  itemCount: myCards.length,
+                  itemCount: otherCards.length,
                   separatorBuilder: (context, index) {
                     return SizedBox(
                       height: 20,
@@ -85,8 +86,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                   ));
                             });
                       },
-                      child: MyCard(
-                        card: myCards[index],
+                      child: OtherCard(
+                        card: otherCards[index],
                       ),
                     );
                   }),

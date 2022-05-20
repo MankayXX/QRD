@@ -62,12 +62,26 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Tema(),
-                                ),
-                              );
+                              return showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                        backgroundColor: srcColor(isDarkTheme),
+                                        content: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text("🛠 Bitmedi 🛠",
+                                                style: TextStyle(
+                                                    color: Colors.red)),
+                                            Text("Bildirim ayarları",
+                                                style: TextStyle(
+                                                    color: otherColor(
+                                                        isDarkTheme))),
+                                          ],
+                                        ));
+                                  });
                             },
                             child: Container(
                               width: 550,
@@ -261,8 +275,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         SizedBox(height: 15),
                         GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()));
                             },
                             child: Container(
                               width: 550,

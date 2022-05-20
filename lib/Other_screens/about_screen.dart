@@ -95,7 +95,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           size: 15,
                         ),
                         SizedBox(width: 10),
-                        Text("0.3 Beta",
+                        Text("0.5 Alpha",
                             style: TextStyle(
                               color: abColor(isDarkTheme),
                               fontFamily: "Poppins",
