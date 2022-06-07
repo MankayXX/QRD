@@ -28,7 +28,6 @@ const colorsDM = [
   Color(0xffD91448)
 ];
 var i = 0;
-//TODO kart oluşturma ekranında renk seçebileceğim bir kısım olmalı, eğer boş geçilirse rastgele renk verilsin.
 
 Color randomColor() {
   i++;
@@ -37,8 +36,6 @@ Color randomColor() {
   } else if (i == colorsLM.length) {
     i = -1;
   }
-
-  // return Color(0xffF25270);
 }
 
 const darkmodeBg = Color(0xff303041);
@@ -71,12 +68,32 @@ Image qrdLogo(bool isDark) {
 
 IconData textIcon(bool isDark) {
   IconData textIcon;
-  if (isDark == true) {
+  if (isDark == false) {
     textIcon = Icons.light_mode_outlined;
-  } else if (isDark == false) {
+  } else if (isDark == true) {
     textIcon = Icons.dark_mode_outlined;
   }
   return textIcon;
+}
+
+String username(bool girdi_mi) {
+  String username;
+  if (girdi_mi == true) {
+    username = "mankay.xx";
+  } else if (girdi_mi == false) {
+    username = "deneme";
+  }
+  return username;
+}
+
+String picture(bool girdi_mi) {
+  String picture;
+  if (girdi_mi == true) {
+    picture = "assets/pictures/profile_pic.jpeg";
+  } else if (girdi_mi == false) {
+    picture = "assets/pictures/blank-pp.jpeg";
+  }
+  return picture;
 }
 
 Color srcColor(bool isDark) {

@@ -249,7 +249,7 @@ class _MyCardState extends State<MyCard> {
                       style: ApptextStyle.MY_CARD_TITLE,
                     ),
                     Text(
-                      "Mert Mankay", //TODO buraya kullanıcı adı gelecek
+                      "Mert Mankay",
                       textAlign: TextAlign.right,
                       style: ApptextStyle.MY_CARD_SUBTITLE,
                     ),

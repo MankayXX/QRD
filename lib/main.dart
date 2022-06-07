@@ -19,10 +19,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, ThemeProvider, child) {
+    return Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeProvider.getTheme,
+        theme: themeProvider.getTheme,
         home: Check(),
       );
     });

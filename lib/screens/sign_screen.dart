@@ -1,11 +1,14 @@
 import 'package:qrd_qr_card_ui/Other_screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/Connection.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+
+bool girdi_mi = false;
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
@@ -99,13 +102,14 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: size.height * 0.01,
               ),
-              InkWell(
+              GestureDetector(
                 onTap: () {
                   login(_emailController.text, _passwordController.text,
                           context)
                       .then((exit) => setState(() {}));
                   _emailController.clear();
                   _passwordController.clear();
+                  girdi_mi = true;
                 },
                 child: Container(
                   padding: EdgeInsets.all(8),
@@ -141,11 +145,12 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.black,
                         )),
                     SizedBox(
-                      width: size.width * 0.05,
+                      width: size.width * 0.02,
                     ),
                     Text(
                       "Kayıt ol",
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),

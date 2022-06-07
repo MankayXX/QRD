@@ -3,6 +3,7 @@ import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/Connection.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
 import 'package:qrd_qr_card_ui/data/transaction_data.dart';
+import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
 import 'package:qrd_qr_card_ui/widgets/my_card.dart';
 import 'package:qrd_qr_card_ui/widgets/transaction_card.dart';
 import 'dart:math';
@@ -30,35 +31,33 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             child: GestureDetector(
-              onTap: () {
-                girdi_mi();
-                return showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                          backgroundColor: srcColor(isDarkTheme),
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("🛠 Bitmedi 🛠",
-                                  style: TextStyle(color: Colors.red)),
-                              Text("Profil Resmi Ekranı",
-                                  style: TextStyle(
-                                      color: otherColor(isDarkTheme))),
-                            ],
-                          ));
-                    });
-              },
-              child: CircleAvatar(
-                backgroundColor: pp,
-                radius: 19,
-                child: CircleAvatar(
-                    backgroundImage:
-                        AssetImage("assets/pictures/profile_pic.jpeg"),
-                    radius: 17),
-              ),
-            ),
+                onTap: () {
+                  girdiMi();
+                  return showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            backgroundColor: srcColor(isDarkTheme),
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("🛠 Bitmedi 🛠",
+                                    style: TextStyle(color: Colors.red)),
+                                Text("Profil Resmi Ekranı",
+                                    style: TextStyle(
+                                        color: otherColor(isDarkTheme))),
+                              ],
+                            ));
+                      });
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  child: Container(
+                      width: 100,
+                      height: 100,
+                      child: Image.asset("assets/pictures/profile_pic.jpeg")),
+                )),
           ),
         ),
         actions: [

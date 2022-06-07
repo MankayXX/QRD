@@ -6,11 +6,9 @@ import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/Connection.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
-import 'package:qrd_qr_card_ui/widgets/my_card.dart';
+import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
 import '../Other_screens/Setting_screen.dart';
 import '../widgets/profile_card.dart';
-
-String deneme = "assets/pictures/blank-pp.jpeg";
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key key}) : super(key: key);
@@ -48,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(children: [
                       GestureDetector(
                           onTap: () {
-                            cikti();
+                            print("kullanıcı değiştirme");
                           },
                           child: Icon(FontAwesomeIcons.chevronDown,
                               color: otherColor(isDarkTheme))),
@@ -98,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     width: 100,
                                     height: 100,
                                     child: Image.asset(
-                                        "assets/pictures/blank-pp.jpeg")),
+                                        "assets/pictures/profile_pic.jpeg")),
                           )),
                       Column(children: [
                         Text(myCards.length.toString(),

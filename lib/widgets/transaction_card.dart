@@ -5,6 +5,7 @@ import 'package:qrd_qr_card_ui/data/date_date.dart';
 import 'package:qrd_qr_card_ui/data/transaction_data.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
+import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
 
 class TransactionCard extends StatelessWidget {
   final TransactionModel transaction;
@@ -36,7 +37,8 @@ class TransactionCard extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey[300])),
+            border: Border.all(
+                color: Color.fromARGB(255, 216, 216, 216), width: 3)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

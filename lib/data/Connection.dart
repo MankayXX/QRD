@@ -8,16 +8,17 @@ Future dbAddData(String name, String surname, String email, String password,
   final conn = await MySqlConnection.connect(ConnectionSettings(
       host: 'localhost',
       port: 3306,
-      user: 'qrd',
+      user: 'mert_mankay',
       db: 'QRD',
       password: 'mertmankay'));
 
   var result = await conn.query(
-      'insert into users (Name, Surname,Email, Password, IsLogged, Username) values (?, ?, ?, ?, ?, ?)',
+      'insert into users (Name, Surname, Email, Image, Password, IsLogged, Username) values (?, ?, ?, ?, ?, ?, ?)',
       [
         name,
         surname,
         email,
+        "assets/pictures/blank-pp.jpeg",
         password,
         0,
         username,
@@ -26,7 +27,7 @@ Future dbAddData(String name, String surname, String email, String password,
 }
 
 var err = " ";
-bool isLogged = true; //TODO değiştir bunu!!
+bool isLogged = true;
 var userId;
 Future login(String email, String password, BuildContext context) async {
   final conn = await MySqlConnection.connect(ConnectionSettings(
@@ -34,7 +35,7 @@ Future login(String email, String password, BuildContext context) async {
       port: 3306,
       user: 'mert_mankay',
       db: 'QRD',
-      password: 'mert1519'));
+      password: 'mertmankay'));
 
   var result = await conn.query(
       'SELECT Id FROM `users` WHERE Email = "$email" AND Password = "$password"');
@@ -45,7 +46,7 @@ Future login(String email, String password, BuildContext context) async {
     err = " ";
     userId = result.first['Id'];
     girdi(userId);
-    girdi_mi().then((value) {
+    girdiMi().then((value) {
       print(value);
     });
     await conn.query(
@@ -61,16 +62,16 @@ Future userName(int id) async {
   final conn = await MySqlConnection.connect(ConnectionSettings(
       host: 'localhost',
       port: 3306,
-      user: 'qrd',
+      user: 'mert_mankay',
       db: 'QRD',
       password: 'mertmankay'));
   await conn.query('SELECT `Username` FROM `users` WHERE `users`.`Id` = $id');
 }
 
-girdi(var user_id) async {
+girdi(var userId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setBool("girdi_mi", true);
-  await prefs.setInt("kullanıcı_id", user_id);
+  await prefs.setInt("kullanıcı_id", userId);
 }
 
 cikti() async {
@@ -78,7 +79,7 @@ cikti() async {
   await prefs.setBool("girdi_mi", false);
 }
 
-girdi_mi() async {
+girdiMi() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLogged = prefs.getBool("girdi_mi");
   print(isLogged);

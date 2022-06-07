@@ -39,20 +39,7 @@ class _OtherCardState extends State<OtherCard> {
   Widget build(BuildContext context) {
     var ekran = MediaQuery.of(context);
     return GestureDetector(
-      onTap: () {
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(30))),
-                  backgroundColor: srcColor(isDarkTheme),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                  ));
-            });
-      },
+      onTap: () {},
       child: Container(
         padding: EdgeInsets.all(20),
         height: 200,
@@ -201,7 +188,7 @@ class _OtherCardState extends State<OtherCard> {
                       style: ApptextStyle.MY_CARD_TITLE,
                     ),
                     Text(
-                      "Mert Mankay", //TODO buraya kullanıcı adı gelecek
+                      "Mert Mankay",
                       textAlign: TextAlign.right,
                       style: ApptextStyle.MY_CARD_SUBTITLE,
                     ),

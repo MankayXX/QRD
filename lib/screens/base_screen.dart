@@ -52,7 +52,7 @@ class _BaseScreenState extends State<BaseScreen> {
                   label: "Anasayfa",
                 ),
                 BottomNavigationBarItem(
-                    icon: Icon(FontAwesomeIcons.search), label: "Keşfet"),
+                    icon: Icon(Icons.waving_hand_outlined), label: "Arşiv"),
                 BottomNavigationBarItem(
                     icon: Icon(FontAwesomeIcons.qrcode), label: "Tara"),
                 BottomNavigationBarItem(

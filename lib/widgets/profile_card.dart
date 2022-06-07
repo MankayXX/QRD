@@ -78,7 +78,7 @@ class _ProfileCardState extends State<ProfileCard> {
               widget.profile_card.kartIsmi,
               style: ApptextStyle.MY_CARD_SUBTITLE,
             ),
-            Icon(FontAwesomeIcons.idCard)
+            Icon(FontAwesomeIcons.idCard, color: Colors.white),
           ],
         ),
       ),
