@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
 aaaa(BuildContext context) async {
   var loginData = await SharedPreferences.getInstance();
   var newUser = (loginData.getBool("girdi_mi"));
-  print(newUser);
   var a = true;
   if (a) {
     Navigator.pushReplacement(

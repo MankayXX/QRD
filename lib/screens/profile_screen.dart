@@ -51,15 +51,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Icon(FontAwesomeIcons.chevronDown,
                               color: otherColor(isDarkTheme))),
                       SizedBox(width: 10),
-                      Text("mankay.xx",
-                          style: TextStyle(color: otherColor(isDarkTheme)))
-                    ]),
-                    GestureDetector(
+                      GestureDetector(
                         onTap: () {
                           Navigator.of(context)
                               .push(MaterialPageRoute(
                                   builder: (context) => SettingScreen()))
                               .then((_) => setState(() {}));
+                        },
+                        child: Text("deneme",
+                            style: TextStyle(color: otherColor(isDarkTheme))),
+                      )
+                    ]),
+                    GestureDetector(
+                        onTap: () {
+                          /*Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => SettingScreen()))
+                              .then((_) => setState(() {}));*/
+                          print(userId);
+                          userName();
                         },
                         child: Icon(Icons.menu,
                             size: 40, color: otherColor(isDarkTheme))),

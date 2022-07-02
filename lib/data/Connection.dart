@@ -27,8 +27,11 @@ Future dbAddData(String name, String surname, String email, String password,
 }
 
 var err = " ";
-bool isLogged = true;
-var userId;
+
+int userId;
+String user_name;
+bool isLogged;
+
 Future login(String email, String password, BuildContext context) async {
   final conn = await MySqlConnection.connect(ConnectionSettings(
       host: 'localhost',
@@ -45,6 +48,7 @@ Future login(String email, String password, BuildContext context) async {
     isLogged = true;
     err = " ";
     userId = result.first['Id'];
+    print(userId);
     girdi(userId);
     girdiMi().then((value) {
       print(value);
@@ -55,23 +59,12 @@ Future login(String email, String password, BuildContext context) async {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => BaseScreen()));
   }
-  return {isLogged, userId};
-}
-
-Future userName(int id) async {
-  final conn = await MySqlConnection.connect(ConnectionSettings(
-      host: 'localhost',
-      port: 3306,
-      user: 'mert_mankay',
-      db: 'QRD',
-      password: 'mertmankay'));
-  await conn.query('SELECT `Username` FROM `users` WHERE `users`.`Id` = $id');
 }
 
 girdi(var userId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setBool("girdi_mi", true);
-  await prefs.setInt("kullanıcı_id", userId);
+  await prefs.setInt("kullanici_id", userId);
 }
 
 cikti() async {
@@ -82,5 +75,20 @@ cikti() async {
 girdiMi() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLogged = prefs.getBool("girdi_mi");
+  int a = prefs.getInt("kullanici_id");
+  print(a);
   print(isLogged);
+}
+
+Future userName() async {
+  final conn = await MySqlConnection.connect(ConnectionSettings(
+      host: 'localhost',
+      port: 3306,
+      user: 'mert_mankay',
+      db: 'QRD',
+      password: 'mertmankay'));
+  var result = await conn
+      .query('SELECT `Username` FROM `users` WHERE `users`.`Id` = $userId');
+  user_name = result.first['Username'];
+  print(result.first['Username']);
 }
