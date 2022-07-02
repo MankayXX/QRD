@@ -6,7 +6,7 @@ import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/Connection.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
-import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Other_screens/Setting_screen.dart';
 import '../widgets/profile_card.dart';
 
@@ -68,7 +68,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .push(MaterialPageRoute(
                                   builder: (context) => SettingScreen()))
                               .then((_) => setState(() {}));*/
-                          print(userId);
                           userName();
                         },
                         child: Icon(Icons.menu,

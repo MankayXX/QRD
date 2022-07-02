@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
 aaaa(BuildContext context) async {
   var loginData = await SharedPreferences.getInstance();
   var newUser = (loginData.getBool("girdi_mi"));
-  var a = true;
-  if (a) {
+  if (newUser) {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => BaseScreen()));
   } else {

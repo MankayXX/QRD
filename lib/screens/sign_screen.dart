@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(
-                height: size.height * 0.02,
+                height: size.height * 0.01,
               ),
               InkWell(
                 onTap: () {

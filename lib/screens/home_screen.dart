@@ -32,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Container(
             child: GestureDetector(
                 onTap: () {
-                  girdiMi();
                   return showDialog(
                       context: context,
                       builder: (context) {
