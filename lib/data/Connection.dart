@@ -114,5 +114,7 @@ Future userName() async {
   var result = await conn
       .query('SELECT `Username` FROM `users` WHERE `users`.`Id` = $deneme');
   print("username ::::::: ");
-  print(result.first['Username']);
+  var a = result.first['Username'];
+  await prefs.setString("userName", "$a");
+  print(a);
 }

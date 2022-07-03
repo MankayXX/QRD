@@ -63,11 +63,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       )
                     ]),
                     GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           /*Navigator.of(context)
                               .push(MaterialPageRoute(
                                   builder: (context) => SettingScreen()))
                               .then((_) => setState(() {}));*/
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          String deneme = prefs.getString("userName");
+
+                          return showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    backgroundColor: srcColor(isDarkTheme),
+                                    content: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("🛠 Bitmedi 🛠",
+                                            style:
+                                                TextStyle(color: Colors.red)),
+                                        Text("$deneme",
+                                            style: TextStyle(
+                                                color:
+                                                    otherColor(isDarkTheme))),
+                                      ],
+                                    ));
+                              });
                           userName();
                         },
                         child: Icon(Icons.menu,
