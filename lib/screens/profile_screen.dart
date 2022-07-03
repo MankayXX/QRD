@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-import 'package:qrd_qr_card_ui/data/Connection.dart';
+import 'package:qrd_qr_card_ui/data/db.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
+import 'package:qrd_qr_card_ui/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Other_screens/Setting_screen.dart';
 import '../widgets/profile_card.dart';
+
+int aaa = 0;
+String a = "a";
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key key}) : super(key: key);
@@ -27,6 +31,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         pickedFile = result.files.first;
       });
     }
+  }
+
+  getSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    a = prefs.getString("userName");
+  }
+
+  deneme() {
+    getSharedPreferences();
+    aaa = 5;
+  }
+
+  @override
+  initState() {
+    super.initState();
+    setState(() {});
   }
 
   @override
@@ -58,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   builder: (context) => SettingScreen()))
                               .then((_) => setState(() {}));
                         },
-                        child: Text("deneme",
+                        child: Text(user_userName,
                             style: TextStyle(color: otherColor(isDarkTheme))),
                       )
                     ]),
@@ -68,9 +88,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .push(MaterialPageRoute(
                                   builder: (context) => SettingScreen()))
                               .then((_) => setState(() {}));*/
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          String deneme = prefs.getString("userName");
 
                           return showDialog(
                               context: context,
@@ -85,14 +102,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Text("🛠 Bitmedi 🛠",
                                             style:
                                                 TextStyle(color: Colors.red)),
-                                        Text("$deneme",
+                                        Text("$user_userName",
                                             style: TextStyle(
                                                 color:
                                                     otherColor(isDarkTheme))),
                                       ],
                                     ));
                               });
-                          userName();
                         },
                         child: Icon(Icons.menu,
                             size: 40, color: otherColor(isDarkTheme))),

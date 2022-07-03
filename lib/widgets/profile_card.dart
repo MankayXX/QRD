@@ -5,7 +5,6 @@ import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 import 'package:qrd_qr_card_ui/constants/app_textstyle.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/data/card_data.dart';
-import 'package:qrd_qr_card_ui/screens/qr_screen.dart';
 import 'package:qrd_qr_card_ui/widgets/my_little_card.dart';
 import 'package:units_converter/units_converter.dart';
 
@@ -85,5 +84,3 @@ class _ProfileCardState extends State<ProfileCard> {
     );
   }
 }
-
-doubleTap() {}

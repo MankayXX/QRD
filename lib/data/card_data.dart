@@ -1,12 +1,18 @@
+import 'dart:math';
+
 import 'package:qrd_qr_card_ui/data/date_date.dart';
 import 'package:flutter/material.dart';
+import 'package:qrd_qr_card_ui/data/db.dart';
 import 'package:qrd_qr_card_ui/data/transaction_data.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
 import 'package:qrd_qr_card_ui/Other_screens/theme_screen.dart';
 
 import 'package:o_color_picker/o_color_picker.dart';
+import 'package:qrd_qr_card_ui/widgets/color_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Color selectedColor = Colors.lightGreen[300];
+var rng = new Random();
 
 class CardModel {
   String kartIsmi;
@@ -74,7 +80,8 @@ addExistCard(String isim, List link, Color renk) {
 TextEditingController _textFieldController = TextEditingController();
 TextEditingController _textFieldController2 = TextEditingController();
 
-displayTextInputDialog(BuildContext context) async {
+kartEkle(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -156,10 +163,13 @@ displayTextInputDialog(BuildContext context) async {
                       fontFamily: "Poppins", color: otherColor(!isDarkTheme)),
                 ),
                 onPressed: () {
+                  print(selectedColor);
                   if (_textFieldController.text.isNotEmpty == true &&
                       _textFieldController2.text.isNotEmpty == true) {
                     addCard(_textFieldController.text,
                         _textFieldController2.text.split(" "), selectedColor);
+                    int id = prefs.getInt("kullanici_id");
+                    db_add_transaction(id, "Bir kart oluşturdu", "blank_");
                     addTransactionModel('Bir kart oluşturdu');
                     Navigator.of(context).pop();
                   } else {
@@ -230,6 +240,7 @@ displayTextInputDialog2(BuildContext context) async {
 }
 
 cardSettings(BuildContext context, int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   return showDialog(
     context: context,
     builder: (context) {
@@ -261,6 +272,9 @@ cardSettings(BuildContext context, int index) async {
                   myLittleCards.removeAt(index);
                   profileCards.removeAt(index);
                   staticIndex--;
+                  int id = prefs.getInt("kullanici_id");
+                  db_add_transaction(
+                      id, "kart sildi", "blank_"); //TODO image değişecek
                   addTransactionModel("Bir kart sildi");
                   Navigator.of(context).pop();
                 } else {
@@ -299,6 +313,7 @@ changeCard(String isim, List link, index, Color color) {
 }
 
 displayTextInputDialog3(BuildContext context, int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   return showDialog(
     context: context,
     builder: (context) {
@@ -336,19 +351,20 @@ displayTextInputDialog3(BuildContext context, int index) async {
                   )),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10),
-                    ),
-                    primary: otherColor(isDarkTheme)),
-                child: Text("Renk",
-                    style: TextStyle(
-                        fontFamily: 'Popppins',
-                        color: otherColor(!isDarkTheme))),
-                onPressed: () {
-                  showDialog(
+                padding: const EdgeInsets.only(top: 20),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10),
+                        ),
+                        primary: otherColor(isDarkTheme)),
+                    child: Text("Renk",
+                        style: TextStyle(
+                            fontFamily: 'Popppins',
+                            color: otherColor(!isDarkTheme))),
+                    onPressed: () {
+                      showDialog(
+                          /*
                       context: context,
                       builder: (context) => Material(
                             child: Column(
@@ -364,10 +380,24 @@ displayTextInputDialog3(BuildContext context, int index) async {
                                 ),
                               ],
                             ),
-                          ));
-                },
-              ),
-            ),
+                          )*/
+                          context: context,
+                          builder: (context) => GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 50,
+                                        crossAxisSpacing: 50,
+                                        mainAxisSpacing: 30),
+                                itemCount: cardColor.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {},
+                                    child: ColorPicker(
+                                        color: cardsaa[rng.nextInt(10)]),
+                                  );
+                                },
+                              ));
+                    })),
             Padding(
               padding: const EdgeInsets.only(top: 5),
               child: ElevatedButton(
@@ -394,6 +424,8 @@ displayTextInputDialog3(BuildContext context, int index) async {
                         index,
                         profileCards[index].kartRenk);
                     addTransactionModel('Bir kart düzenledi');
+                    int id = prefs.getInt("kullanici_id");
+                    db_add_transaction(id, "Bir kart düzenledi", "blank_");
                   }
                   //Sadece linkler değişiyor
                   else if (_textFieldController.text.isEmpty &&
@@ -402,6 +434,8 @@ displayTextInputDialog3(BuildContext context, int index) async {
                         myCards[index].kartRenk);
                     changeCard(profileCards[index].kartIsmi, linkler, index,
                         profileCards[index].kartRenk);
+                    int id = prefs.getInt("kullanici_id");
+                    db_add_transaction(id, "Bir kart düzenledi", "blank_");
                     addTransactionModel('Bir kart düzenledi');
                   }
                   //sadece renk değişiyor
@@ -413,6 +447,8 @@ displayTextInputDialog3(BuildContext context, int index) async {
                         index, selectedColor);
                     changeCard(profileCards[index].kartIsmi,
                         profileCards[index].linkler, index, selectedColor);
+                    int id = prefs.getInt("kullanici_id");
+                    db_add_transaction(id, "Bir kart düzenledi", "blank_");
                     addTransactionModel('Bir kart düzenledi');
                   }
 
@@ -423,6 +459,8 @@ displayTextInputDialog3(BuildContext context, int index) async {
                         myCards[index].kartRenk);
                     changeCard(_textFieldController.text.inCaps, linkler, index,
                         profileCards[index].kartRenk);
+                    int id = prefs.getInt("kullanici_id");
+                    db_add_transaction(id, "Bir kart düzenledi", "blank_");
                     addTransactionModel('Bir kart düzenledi');
                   }
                   //hiçbirisi değişmiyor
@@ -495,10 +533,9 @@ otherCardSettings(BuildContext context, int index) async {
             ),
             GestureDetector(
               onTap: () {
+                staticIndex--;
                 if (myCards.length - 1 > 0) {
                   otherCards.removeAt(index);
-                  staticIndex--;
-                  addTransactionModel("Bir kart sildi");
                   Navigator.of(context).pop();
                 } else {
                   tekKart(context).then((exit) => Navigator.of(context).pop());

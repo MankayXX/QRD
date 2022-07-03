@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
+import 'package:qrd_qr_card_ui/main.dart';
 import 'package:qrd_qr_card_ui/screens/base_screen.dart';
+import 'package:qrd_qr_card_ui/screens/profile_screen.dart';
 import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,14 +74,6 @@ Future logOut(BuildContext context) async {
     'UPDATE `users` SET `IsLogged` = 0 WHERE `users`.`Id` = $userId',
   );
   cikti(context);
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  //TODO print kısımlarını işin bitince sil!
-  int a = prefs.getInt("kullanici_id");
-  bool b = prefs.getBool("girdi_mi");
-  String c = prefs.getString("userName");
-  print("****** çıkış ******");
-  print("\na : $a\nb : $b\nc: $c");
-  print("****** çıkış bitti ******");
 }
 
 girdi(
@@ -95,14 +89,14 @@ girdi(
 cikti(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setBool("girdi_mi", false);
-  await prefs.setInt("kullanici_id", 2);
-  await prefs.setString("userName", "boş");
+  await prefs.setInt("kullanici_id", 0);
+  await prefs.setString("userName", " ");
 
   Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (context) => LoginPage()));
 }
 
-Future userName() async {
+userName() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   int deneme = prefs.getInt("kullanici_id");
   final conn = await MySqlConnection.connect(ConnectionSettings(
@@ -113,8 +107,32 @@ Future userName() async {
       password: 'mertmankay'));
   var result = await conn
       .query('SELECT `Username` FROM `users` WHERE `users`.`Id` = $deneme');
-  print("username ::::::: ");
   var a = result.first['Username'];
   await prefs.setString("userName", "$a");
-  print(a);
+  user_userName = prefs.getString("userName");
+  print(user_userName);
+}
+
+Future db_add_transaction(int user_id, String did_what, String image) async {
+  final conn = await MySqlConnection.connect(ConnectionSettings(
+      host: 'localhost',
+      port: 3306,
+      user: 'mert_mankay',
+      db: 'QRD',
+      password: 'mertmankay'));
+
+  await conn.query(
+      'insert into `transaction` (user_id, did_what, Image) values ($user_id, "$did_what", "$image")');
+}
+
+Future db_add_card(int user_id, String did_what, String image) async {
+  final conn = await MySqlConnection.connect(ConnectionSettings(
+      host: 'localhost',
+      port: 3306,
+      user: 'mert_mankay',
+      db: 'QRD',
+      password: 'mertmankay'));
+
+  await conn.query(
+      'insert into `transaction` (user_id, did_what, Image) values ($user_id, "$did_what", "$image")');
 }

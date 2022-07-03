@@ -117,8 +117,7 @@ class _CardScreenState extends State<CardScreen> {
                 icon: Icon(Icons.add_circle, size: 40),
                 color: otherColor(isDarkTheme),
                 onPressed: () {
-                  displayTextInputDialog(context)
-                      .then((exit) => setState(() {}));
+                  kartEkle(context).then((exit) => setState(() {}));
                 }),
             SizedBox(height: 5),
             Text(

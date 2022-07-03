@@ -1,4 +1,4 @@
-import 'package:qrd_qr_card_ui/data/Connection.dart';
+import 'package:qrd_qr_card_ui/data/db.dart';
 import 'package:qrd_qr_card_ui/screens/sign_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -178,6 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             _emailController.text,
                             _passwordController.text,
                             _userNameController.text);
+                        Navigator.pop(context);
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 5),
@@ -213,7 +214,9 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   icon: Icon(
                     Icons.arrow_back_ios_outlined,
                     color: Colors.black,

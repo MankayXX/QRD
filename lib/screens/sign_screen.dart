@@ -1,7 +1,9 @@
 import 'package:qrd_qr_card_ui/Other_screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:qrd_qr_card_ui/constants/color_constants.dart';
-import 'package:qrd_qr_card_ui/data/Connection.dart';
+import 'package:qrd_qr_card_ui/data/db.dart';
+import 'package:qrd_qr_card_ui/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
